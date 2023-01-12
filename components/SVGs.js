@@ -1,4 +1,4 @@
-import Svg, { Path, G, Rect } from 'react-native-svg';
+import Svg, { Path, G, Circle, Rect } from 'react-native-svg';
 
 export function PillSVG(props) {
         return (
@@ -7,12 +7,12 @@ export function PillSVG(props) {
                         {...props}
                 >
                         <G style={{
-                                stroke: "#4BEE9A",
+                                stroke: props.color,
                         }}>
                                 <Path
                                         d="M242.555 151.851a24.658 24.658 0 0 1 17.492 7.246 24.658 24.658 0 0 1 7.246 17.492 24.658 24.658 0 0 1-7.246 17.492 24.658 24.658 0 0 1-17.492 7.246h-38.708v-49.476h38.708Z"
                                         style={{
-                                                fill: "#4bee9a",
+                                                fill: props.color,
                                         }}
                                         transform="rotate(134.996 223.594 176.535)"
                                 />
@@ -31,193 +31,97 @@ export function PillSVG(props) {
 
 export function CalendarSVG(props) {
         return (
-                <Svg viewBox="180 138.88 50 46.056" {...props}>
-                        <Rect
-                                style={{
-                                        stroke: "#000",
-                                        opacity: 0.9,
-                                        fill: "none",
-                                        strokeWidth: 2,
-                                }}
-                                x={180}
-                                y={144.936}
-                                width={50}
-                                height={40}
-                                rx={2}
-                                ry={2}
-                        />
-                        <Path
-                                style={{
-                                        fill: "#d8d8d8",
-                                        stroke: "#000",
-                                }}
-                                d="M190 138.88v12.632M220 138.9v12.6"
-                        />
-                        <Rect
-                                y={155.812}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={187.1}
-                        />
-                        <Rect
-                                y={155.8}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={217}
-                        />
-                        <Rect
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={202.05}
-                                y={155.8}
-                        />
-                        <Rect
-                                y={155.8}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={194.6}
-                        />
-                        <Rect
-                                y={155.8}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={209.6}
-                        />
-                        <Rect
-                                y={171.885}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={187.1}
-                        />
-                        <Rect
-                                y={171.873}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={217}
-                        />
-                        <Rect
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={202.05}
-                                y={171.873}
-                        />
-                        <Rect
-                                y={171.873}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={194.6}
-                        />
-                        <Rect
-                                y={171.873}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={209.6}
-                        />
-                        <Rect
-                                y={163.942}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={187.061}
-                        />
-                        <Rect
-                                y={163.93}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={216.961}
-                        />
-                        <Rect
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={202.011}
-                                y={163.93}
-                        />
-                        <Rect
-                                y={163.93}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={194.561}
-                        />
-                        <Rect
-                                y={163.93}
-                                width={6}
-                                height={6}
-                                rx={1}
-                                ry={1}
-                                style={{
-                                        fillOpacity: 0.7,
-                                }}
-                                x={209.561}
-                        />
+                <Svg
+                        id="_x32_"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlnsXlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 512 512"
+                        xmlSpace="preserve"
+                        {...props}
+                >
+                        <G style={{ fill: props.color }}>
+                                <Path
+                                        d="M149.193,103.525c15.994,0,28.964-12.97,28.964-28.972V28.964C178.157,12.97,165.187,0,149.193,0 C133.19,0,120.22,12.97,120.22,28.964v45.589C120.22,90.556,133.19,103.525,149.193,103.525z"
+                                />
+                                <Path
+                                        d="M362.815,103.525c15.994,0,28.964-12.97,28.964-28.972V28.964C391.78,12.97,378.81,0,362.815,0 c-16.003,0-28.972,12.97-28.972,28.964v45.589C333.843,90.556,346.813,103.525,362.815,103.525z"
+                                />
+                                <Path
+                                        d="M435.164,41.287h-17.925v33.266c0,30.017-24.415,54.431-54.423,54.431c-30.017,0-54.431-24.414-54.431-54.431 V41.287H203.615v33.266c0,30.017-24.414,54.431-54.422,54.431c-30.018,0-54.432-24.414-54.432-54.431V41.287H76.836 c-38.528,0-69.763,31.235-69.763,69.763v331.187C7.073,480.765,38.308,512,76.836,512h358.328 c38.528,0,69.763-31.235,69.763-69.763V111.05C504.927,72.522,473.691,41.287,435.164,41.287z M470.982,442.237 c0,19.748-16.07,35.818-35.818,35.818H76.836c-19.749,0-35.818-16.07-35.818-35.818V155.138h429.964V442.237z"
+                                />
+                                <Rect
+                                        x={183.676}
+                                        y={377.571}
+                                        width={56.727}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={183.676}
+                                        y={289.65}
+                                        width={56.727}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={95.765}
+                                        y={377.571}
+                                        width={56.718}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={95.765}
+                                        y={289.65}
+                                        width={56.718}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={359.517}
+                                        y={201.73}
+                                        width={56.718}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={271.597}
+                                        y={201.73}
+                                        width={56.735}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={271.597}
+                                        y={289.65}
+                                        width={56.735}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={359.517}
+                                        y={377.571}
+                                        width={56.718}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={359.517}
+                                        y={289.65}
+                                        width={56.718}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={271.597}
+                                        y={377.571}
+                                        width={56.735}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={183.676}
+                                        y={201.73}
+                                        width={56.727}
+                                        height={56.727}
+                                />
+                                <Rect
+                                        x={95.765}
+                                        y={201.73}
+                                        width={56.718}
+                                        height={56.727}
+                                />
+                        </G>
                 </Svg>
         )
 }

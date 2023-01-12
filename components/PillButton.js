@@ -44,7 +44,7 @@ class PillButton extends Component {
                         <View style={this.props.style}>
                                 <TouchableOpacity disabled={awaitingIO} onPress={this._updateMedStatus}>
                                         <View style={style}>
-                                                <PillSVG width={75} height={75} />
+                                                <PillSVG width={75} height={75} color={"#4bee9a"} />
                                         </View>
                                 </TouchableOpacity>
                                 <Text style={styles.headlineText}>
