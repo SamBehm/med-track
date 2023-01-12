@@ -35,10 +35,8 @@ class PillButton extends Component {
 
                 }
 
-                console.log(medsTaken);
-
                 const style = {
-                        backgroundColor: medsTaken ? '#4bee9a' : 'none',
+                        backgroundColor: medsTaken ? '#4bee9a' : 'transparent',
                         ...styles.circleButton
                 };
 
