@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import PillSVG from './PillSVG';
+import { PillSVG } from './SVGs';
 import { medStatusOfDate, setMedsTakenForDate, unsetMedsTakenForDate } from '../libs/localStorageHandler/localStorage';
 
 class PillButton extends Component {
