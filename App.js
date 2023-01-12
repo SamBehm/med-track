@@ -6,9 +6,7 @@ import React from 'react';
 export default function App() {
   return (
     <View style={styles.container}>
-      <View>
-        <PillButton />
-      </View>
+      <PillButton style={styles.container} />
     </View>
   );
 }
@@ -18,7 +16,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    padding: 5
   }
 });
 

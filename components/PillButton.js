@@ -25,9 +25,14 @@ class PillButton extends Component {
         render() {
                 const { medsTaken, awaitingIO } = this.state;
                 if (medsTaken == null) {
-                        return <View style={[styles.circleButton]}>
-                                <Text>Loading</Text>
-                        </View>
+                        return (
+                                <View style={this.props.style}>
+                                        <View style={[styles.circleButton]}>
+                                                <Text>Loading</Text>
+                                        </View>
+                                </View>
+                        );
+
                 }
 
                 console.log(medsTaken);
@@ -37,11 +42,18 @@ class PillButton extends Component {
                         ...styles.circleButton
                 };
 
-                return (<TouchableOpacity disabled={awaitingIO} onPress={this._updateMedStatus}>
-                        <View style={style}>
-                                <PillSVG width={75} height={75} />
+                return (
+                        <View style={this.props.style}>
+                                <TouchableOpacity disabled={awaitingIO} onPress={this._updateMedStatus}>
+                                        <View style={style}>
+                                                <PillSVG width={75} height={75} />
+                                        </View>
+                                </TouchableOpacity>
+                                <Text style={styles.headlineText}>
+                                        {this.state.medsTaken ? "Nice! See you tomorrow :)" : "Ready to take your meds?"}
+                                </Text>
                         </View>
-                </TouchableOpacity>);
+                );
         }
 
         async _updateMedStatus() {
@@ -74,6 +86,13 @@ const styles = StyleSheet.create({
                 borderRadius: 75,
                 borderColor: '#4bee9a'
         },
+        headlineText: {
+                textAlign: 'center',
+                width: 200,
+                fontSize: 30,
+                opacity: 0.7,
+                margin: 20
+        }
 });
 
 export default PillButton;
