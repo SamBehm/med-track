@@ -1,10 +1,11 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import { medStatusOfDate } from '../libs/localStorageHandler/localStorage';
 
 class MonthView extends Component {
 
         constructor(props) {
+                View
                 super(props);
 
                 this.state = {
@@ -46,15 +47,29 @@ class MonthView extends Component {
                                 : maxNumColumns;
                         for (let column = 0; column < numColumns; column++) {
                                 days.push(
-                                        <View style={styles.dayContainer} key={(row * maxNumColumns) + column}>
-                                                <Text>{(row * maxNumColumns) + column}</Text>
-                                        </View>
+                                        <TouchableOpacity style={styles.dayContainer} key={(row * maxNumColumns) + column}>
+                                                <View style={styles.textContainer}>
+                                                        <Text style={{
+                                                                color: "white",
+                                                                fontSize: 15,
+                                                                fontWeight: "bold"
+                                                        }}>{(row * maxNumColumns) + column + 1}</Text>
+                                                </View>
+                                        </TouchableOpacity>
                                 );
                         }
+
+                        if (row == numRows - 1 && numColumns != maxNumColumns) {
+                                days.push(<View style={{ flexGrow: maxNumColumns - numColumns }}></View>)
+                        }
+
                         rows.push(<View style={styles.row} key={row}>{days}</View>);
                 }
+
                 return rows;
         }
+
+
 
         _loadMonth() {
                 let baseDate = new Date(this.props.year, this.props.month, 1);
@@ -75,18 +90,28 @@ class MonthView extends Component {
 const styles = StyleSheet.create({
         container: {
                 flexGrow: 1,
-                width: "100%"
+                width: "100%",
+                maxHeight: "70%",
+                justifyContent: "center",
         },
         row: {
                 flexGrow: 1,
                 flexDirection: 'row',
+                paddingHorizontal: "5%"
         },
         dayContainer: {
-                flexBasis: "100%",
                 flexGrow: 1,
-                flexShrink: 1,
-                borderWidth: 1,
-                borderColor: "grey"
+                justifyContent: "center",
+                alignItems: "center",
+                maxWidth: "14.2%"
+        },
+        textContainer: {
+                width: 25,
+                height: 25,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 25,
+                backgroundColor: '#4bee9a'
         }
 });
 

@@ -44,10 +44,8 @@ const styles = StyleSheet.create({
                 alignItems: 'center'
         },
         header: {
-                maxHeight: "10%",
-                width: "100%",
-                borderBottomWidth: 1,
-                borderBottomColor: 'grey',
+                maxHeight: "20%",
+                width: "100%"
         }
 });
 
