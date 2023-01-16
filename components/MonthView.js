@@ -33,7 +33,8 @@ class MonthView extends Component {
 
         _createDays() {
 
-                let numDays = this.state.data.length;
+                let data = this.state.data;
+                let numDays = data.length;
 
                 let rows = [];
                 let maxNumColumns = 7;
@@ -41,32 +42,103 @@ class MonthView extends Component {
                 let lastRowNumColumns = numDays - ((numRows - 1) * maxNumColumns);
 
                 for (let row = 0; row < numRows; row++) {
+
                         let days = [];
-                        let numColumns = row == numRows - 1 ?
-                                lastRowNumColumns
-                                : maxNumColumns;
-                        for (let column = 0; column < numColumns; column++) {
-                                days.push(
-                                        <TouchableOpacity style={styles.dayContainer} key={(row * maxNumColumns) + column}>
-                                                <View style={styles.textContainer}>
+                        let currentStreak = [];
+                        let currentStreakID = 0;
+
+                        for (let col = 0; col < maxNumColumns; col++) {
+                                let key = (row * maxNumColumns) + col;
+
+                                let dayButton = (
+                                        <TouchableOpacity
+                                                style={{
+                                                        flex: 1,
+                                                        justifyContent: "center",
+                                                        alignItems: "center"
+                                                }}
+                                                key={key}
+                                        >
+                                                <View style={{
+                                                        flex: 1,
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        minWidth: 25,
+                                                        minHeight: 25,
+                                                        maxWidth: 25,
+                                                        maxHeight: 25,
+                                                        borderRadius: 25,
+                                                        backgroundColor: data[key] == null ? 'transparent' : 'green'
+                                                }}>
                                                         <Text style={{
-                                                                color: "white",
-                                                                fontSize: 15,
-                                                                fontWeight: "bold"
-                                                        }}>{(row * maxNumColumns) + column + 1}</Text>
+                                                                textAlign: "center",
+                                                                fontWeight: "bold",
+                                                                fontSize: 16,
+                                                                color: data[key] == null ? "black" : "white"
+                                                        }}>
+                                                                {key + 1}
+                                                        </Text>
                                                 </View>
                                         </TouchableOpacity>
-                                );
+                                )
+
+                                if (data[key] != null) {
+                                        currentStreak.push(dayButton);
+                                        continue;
+                                }
+
+                                if (currentStreak.length > 1) {
+                                        days.push(
+                                                <View
+                                                        style={{
+                                                                flex: currentStreak.length,
+                                                                flexDirection: "row",
+                                                                justifyContent: "center",
+                                                                alignItems: "center",
+                                                        }}
+                                                        key={'s' + currentStreakID++}
+                                                >
+                                                        <View style={{
+                                                                flexDirection: "row",
+                                                                backgroundColor: "#4bee9a",
+                                                                borderRadius: 25,
+                                                                minHeight: "50%",
+                                                                justifyContent: "space-between",
+                                                                alignItems: "center",
+                                                        }}>
+                                                                {currentStreak}
+                                                        </View>
+                                                </View>
+                                        );
+                                        days.push(dayButton);
+                                        currentStreak = [];
+                                        continue;
+                                }
+
+                                if (currentStreak.length == 1) {
+                                        days.push(currentStreak[0]);
+                                        days.push(dayButton);
+                                        currentStreak = [];
+                                        continue;
+                                }
+
+                                days.push(dayButton);
+
                         }
 
-                        if (row == numRows - 1 && numColumns != maxNumColumns) {
-                                days.push(<View style={{ flexGrow: maxNumColumns - numColumns }}></View>)
-                        }
+                        rows.push(
+                                <View style={[styles.row, { backgroundColor: "transparent" }]} key={row.toString()} >
+                                        {days}
+                                </View >
+                        );
 
-                        rows.push(<View style={styles.row} key={row}>{days}</View>);
                 }
 
+
                 return rows;
+
+
+
         }
 
 
@@ -87,31 +159,25 @@ class MonthView extends Component {
         }
 }
 
+
 const styles = StyleSheet.create({
         container: {
                 flexGrow: 1,
                 width: "100%",
                 maxHeight: "70%",
                 justifyContent: "center",
+                alignItems: "center",
+                borderWidth: 1,
         },
         row: {
                 flexGrow: 1,
-                flexDirection: 'row',
-                paddingHorizontal: "5%"
-        },
-        dayContainer: {
-                flexGrow: 1,
+                flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                maxWidth: "14.2%"
-        },
-        textContainer: {
-                width: 25,
-                height: 25,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 25,
-                backgroundColor: '#4bee9a'
+                maxHeight: 100,
+                minHeight: 100,
+                width: "90%",
+                borderWidth: 1
         }
 });
 
