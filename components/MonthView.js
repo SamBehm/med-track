@@ -73,7 +73,7 @@ class MonthView extends Component {
                                 }
                         }
 
-                        for (let col = 0; days.length < maxNumColumns; col++) {
+                        for (let col = 0; (col < maxNumColumns && days.length < maxNumColumns); col++) {
                                 let key = (row * maxNumColumns) + col;
 
                                 if (key >= data.length) {
@@ -196,10 +196,14 @@ function DayButton(props) {
 const styles = StyleSheet.create({
         container: {
                 flexGrow: 1,
-                width: "100%",
+                width: "90%",
                 maxHeight: "70%",
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundColor: "white",
+                marginHorizontal: "5%",
+                marginVertical: "5%",
+                borderRadius: 25,
         },
         row: {
                 flexGrow: 1,
