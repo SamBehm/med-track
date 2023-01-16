@@ -26,6 +26,19 @@ class MonthView extends Component {
 
                 return (
                         <View style={styles.container}>
+                                <View style={[styles.row, {
+                                        maxHeight: 15,
+                                        minHeight: 15,
+
+                                }]}>
+                                        <Text style={styles.weekHeaderText}>S</Text>
+                                        <Text style={styles.weekHeaderText}>M</Text>
+                                        <Text style={styles.weekHeaderText}>T</Text>
+                                        <Text style={styles.weekHeaderText}>W</Text>
+                                        <Text style={styles.weekHeaderText}>T</Text>
+                                        <Text style={styles.weekHeaderText}>F</Text>
+                                        <Text style={styles.weekHeaderText}>S</Text>
+                                </View>
                                 {this._createDays()}
                         </View>
                 );
@@ -39,7 +52,10 @@ class MonthView extends Component {
                 let rows = [];
                 let maxNumColumns = 7;
                 let numRows = Math.ceil(numDays / maxNumColumns);
-                let lastRowNumColumns = numDays - ((numRows - 1) * maxNumColumns);
+
+                let date = new Date();
+                date.setFullYear(this.props.year, this.props.month, 1);
+                let offset = date.getDay();
 
                 for (let row = 0; row < numRows; row++) {
 
@@ -47,47 +63,31 @@ class MonthView extends Component {
                         let currentStreak = [];
                         let currentStreakID = 0;
 
-                        for (let col = 0; col < maxNumColumns; col++) {
+                        if (offset > 0) {
+                                let lastMonth = new Date(this.props.year, this.props.month, 0);
+
+                                while (offset != 0) {
+                                        let key = lastMonth.getDate() - (offset - 1);
+                                        days.push(<DayButton key={`lm${key}`} dayNum={key} value={null} style={{ opacity: 0.2 }} />)
+                                        offset--;
+                                }
+                        }
+
+                        for (let col = 0; days.length < maxNumColumns; col++) {
                                 let key = (row * maxNumColumns) + col;
 
-                                let dayButton = (
-                                        <TouchableOpacity
-                                                style={{
-                                                        flex: 1,
-                                                        justifyContent: "center",
-                                                        alignItems: "center"
-                                                }}
-                                                key={key}
-                                        >
-                                                <View style={{
-                                                        flex: 1,
-                                                        justifyContent: "center",
-                                                        alignItems: "center",
-                                                        minWidth: 25,
-                                                        minHeight: 25,
-                                                        maxWidth: 25,
-                                                        maxHeight: 25,
-                                                        borderRadius: 25,
-                                                        backgroundColor: data[key] == null ? 'transparent' : 'green'
-                                                }}>
-                                                        <Text style={{
-                                                                textAlign: "center",
-                                                                fontWeight: "bold",
-                                                                fontSize: 16,
-                                                                color: data[key] == null ? "black" : "white"
-                                                        }}>
-                                                                {key + 1}
-                                                        </Text>
-                                                </View>
-                                        </TouchableOpacity>
-                                )
+                                if (key >= data.length) {
+                                        break;
+                                }
+
+                                let dayButton = (<DayButton key={key} dayNum={key + 1} value={data[key]} />);
 
                                 if (data[key] != null) {
                                         currentStreak.push(dayButton);
                                         continue;
                                 }
 
-                                if (currentStreak.length > 1) {
+                                if (currentStreak.length > 0) {
                                         days.push(
                                                 <View
                                                         style={{
@@ -115,19 +115,20 @@ class MonthView extends Component {
                                         continue;
                                 }
 
-                                if (currentStreak.length == 1) {
-                                        days.push(currentStreak[0]);
-                                        days.push(dayButton);
-                                        currentStreak = [];
-                                        continue;
-                                }
-
                                 days.push(dayButton);
 
                         }
 
+                        if (row == numRows - 1) {
+                                let i = 0;
+                                while (days.length < maxNumColumns) {
+                                        days.push(<DayButton key={`nm${i}`} dayNum={i + 1} value={null} style={{ opacity: 0.2 }} />);
+                                        i++;
+                                }
+                        }
+
                         rows.push(
-                                <View style={[styles.row, { backgroundColor: "transparent" }]} key={row.toString()} >
+                                <View style={styles.row} key={row.toString()} >
                                         {days}
                                 </View >
                         );
@@ -159,6 +160,38 @@ class MonthView extends Component {
         }
 }
 
+function DayButton(props) {
+        return (
+                <TouchableOpacity
+                        style={[{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center"
+                        }, props.style]}
+                >
+                        <View style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                minWidth: 25,
+                                minHeight: 25,
+                                maxWidth: 25,
+                                maxHeight: 25,
+                                borderRadius: 25
+                        }}>
+                                <Text style={{
+                                        textAlign: "center",
+                                        fontWeight: "bold",
+                                        fontSize: 16,
+                                        color: props.value == null ? "black" : "white"
+                                }}>
+                                        {props.dayNum}
+                                </Text>
+                        </View>
+                </TouchableOpacity>
+        );
+}
+
 
 const styles = StyleSheet.create({
         container: {
@@ -167,17 +200,21 @@ const styles = StyleSheet.create({
                 maxHeight: "70%",
                 justifyContent: "center",
                 alignItems: "center",
-                borderWidth: 1,
         },
         row: {
                 flexGrow: 1,
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                maxHeight: 100,
-                minHeight: 100,
+                maxHeight: 75,
+                minHeight: 75,
                 width: "90%",
-                borderWidth: 1
+        },
+        weekHeaderText: {
+                flex: 1,
+                color: "grey",
+                textAlign: "center",
+                fontWeight: "bold"
         }
 });
 
