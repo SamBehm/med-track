@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import { medStatusOfDate } from '../libs/localStorageHandler/localStorage';
 
@@ -26,26 +26,33 @@ class MonthView extends Component {
 
                 return (
                         <View style={styles.container}>
-                                <View style={[styles.row, {
-                                        maxHeight: 15,
-                                        minHeight: 15,
-
-                                }]}>
-                                        <Text style={styles.weekHeaderText}>S</Text>
-                                        <Text style={styles.weekHeaderText}>M</Text>
-                                        <Text style={styles.weekHeaderText}>T</Text>
-                                        <Text style={styles.weekHeaderText}>W</Text>
-                                        <Text style={styles.weekHeaderText}>T</Text>
-                                        <Text style={styles.weekHeaderText}>F</Text>
-                                        <Text style={styles.weekHeaderText}>S</Text>
+                                <View style={styles.header}>
+                                        <TouchableOpacity style={[styles.monthButton, styles.shadow]}>
+                                                <Text style={{ fontSize: 30, fontWeight: "bold" }}>{monthNames[this.props.month]}</Text>
+                                        </TouchableOpacity>
                                 </View>
-                                {this._createDays()}
+
+                                <View style={styles.monthContainer}>
+                                        <View style={[styles.row, {
+                                                maxHeight: 15,
+                                                minHeight: 15,
+
+                                        }]}>
+                                                <Text style={styles.weekHeaderText}>S</Text>
+                                                <Text style={styles.weekHeaderText}>M</Text>
+                                                <Text style={styles.weekHeaderText}>T</Text>
+                                                <Text style={styles.weekHeaderText}>W</Text>
+                                                <Text style={styles.weekHeaderText}>T</Text>
+                                                <Text style={styles.weekHeaderText}>F</Text>
+                                                <Text style={styles.weekHeaderText}>S</Text>
+                                        </View>
+                                        {this._createDays()}
+                                </View>
                         </View>
                 );
         }
 
         _createDays() {
-
                 let data = this.state.data;
                 let numDays = data.length;
 
@@ -135,11 +142,7 @@ class MonthView extends Component {
 
                 }
 
-
                 return rows;
-
-
-
         }
 
 
@@ -195,15 +198,33 @@ function DayButton(props) {
 
 const styles = StyleSheet.create({
         container: {
-                flexGrow: 1,
-                width: "90%",
-                maxHeight: "70%",
+                flex: 5,
+                justifyContent: "flex-start",
+                alignItems: "center",
+        },
+        header: {
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: "100%",
+                marginTop: "8%",
+        },
+        monthButton: {
+                backgroundColor: "white",
+                paddingVertical: "5%",
+                paddingHorizontal: "10%",
+                borderRadius: 25,
+        },
+        monthContainer: {
+                flex: 5,
                 justifyContent: "center",
                 alignItems: "center",
                 backgroundColor: "white",
-                marginHorizontal: "5%",
+                padding: "5%",
+                marginHorizontal: "2%",
                 marginVertical: "5%",
                 borderRadius: 25,
+                maxHeight: "70%"
         },
         row: {
                 flexGrow: 1,
@@ -219,7 +240,19 @@ const styles = StyleSheet.create({
                 color: "grey",
                 textAlign: "center",
                 fontWeight: "bold"
+        },
+        shadow: {
+                shadowColor: "#000000",
+                shadowOpacity: 1,
+                shadowRadius: 2,
+                shadowOffset: {
+                        height: 1,
+                        width: 1
+                },
+                elevation: 3
         }
 });
+
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 export default MonthView;
