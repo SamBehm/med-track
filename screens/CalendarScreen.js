@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import React, { Component, Dimensions } from 'react';
+import React, { Component } from 'react';
 import WeekView from '../components/WeekView';
 import MonthSwiper from '../components/MonthSwiper';
 

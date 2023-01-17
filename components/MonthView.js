@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import React, { Component } from 'react';
 import { medStatusOfDate } from '../libs/localStorageHandler/localStorage';
 
@@ -10,13 +10,20 @@ class MonthView extends Component {
 
                 this.state = {
                         data: null,
+                        refreshing: false
                 }
 
                 this._loadMonth = this._loadMonth.bind(this);
+                this._onRefresh = this._onRefresh.bind(this);
         }
 
         componentDidMount() {
-                this._loadMonth();
+                let promises = this._loadMonth();
+                Promise.all(promises).then((values) => {
+                        this.setState(() => ({
+                                data: values
+                        }));
+                });
         }
 
         render() {
@@ -25,7 +32,12 @@ class MonthView extends Component {
                 }
 
                 return (
-                        <View style={styles.container}>
+                        <ScrollView
+                                contentContainerStyle={styles.container}
+                                refreshControl={
+                                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />
+                                }
+                        >
                                 <View style={styles.header}>
                                         <TouchableOpacity style={[styles.monthButton, styles.shadow]}>
                                                 <Text style={{ fontSize: 30, fontWeight: "bold" }}>{monthNames[this.props.month]}</Text>
@@ -48,8 +60,20 @@ class MonthView extends Component {
                                         </View>
                                         {this._createDays()}
                                 </View>
-                        </View>
+                        </ScrollView>
                 );
+        }
+
+        _onRefresh() {
+                this.setState({ refreshing: true });
+                let promises = this._loadMonth();
+                Promise.all(promises).then((values) => {
+                        this.setState(() => ({
+                                data: values,
+                                refreshing: false
+                        }));
+                });
+
         }
 
         _createDays() {
@@ -159,11 +183,7 @@ class MonthView extends Component {
                         baseDate.setDate(baseDate.getDate() + 1);
                 }
 
-                Promise.all(promises).then((values) => {
-                        this.setState(() => ({
-                                data: values
-                        }));
-                });
+                return promises;
         }
 }
 
