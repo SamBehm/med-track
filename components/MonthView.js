@@ -56,13 +56,15 @@ class MonthView extends Component {
                 let data = this.state.data;
                 let numDays = data.length;
 
-                let rows = [];
-                let maxNumColumns = 7;
-                let numRows = Math.ceil(numDays / maxNumColumns);
-
                 let date = new Date();
                 date.setFullYear(this.props.year, this.props.month, 1);
                 let offset = date.getDay();
+
+                let rows = [];
+                let maxNumColumns = 7;
+                let numRows = Math.ceil((numDays + offset) / maxNumColumns);
+
+                let currentDayNum = 0;
 
                 for (let row = 0; row < numRows; row++) {
 
@@ -81,7 +83,9 @@ class MonthView extends Component {
                         }
 
                         for (let col = 0; (col < maxNumColumns && days.length < maxNumColumns); col++) {
-                                let key = (row * maxNumColumns) + col;
+
+                                let key = currentDayNum;
+                                currentDayNum++;
 
                                 if (key >= data.length) {
                                         break;
@@ -217,7 +221,7 @@ const styles = StyleSheet.create({
         },
         monthContainer: {
                 flex: 5,
-                justifyContent: "center",
+                justifyContent: "flex-start",
                 alignItems: "center",
                 backgroundColor: "white",
                 padding: "5%",
@@ -231,8 +235,8 @@ const styles = StyleSheet.create({
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                maxHeight: 75,
-                minHeight: 75,
+                maxHeight: 70,
+                minHeight: 70,
                 width: "90%",
         },
         weekHeaderText: {
