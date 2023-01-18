@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl, Modal } from 'react-native';
 import React, { Component } from 'react';
 import { medStatusOfDate } from '../libs/localStorageHandler/localStorage';
 
@@ -10,7 +10,9 @@ class MonthView extends Component {
 
                 this.state = {
                         data: null,
-                        refreshing: false
+                        refreshing: false,
+                        modalVisible: false,
+                        modalTargetDate: null,
                 }
 
                 this._loadMonth = this._loadMonth.bind(this);
@@ -48,7 +50,6 @@ class MonthView extends Component {
                                         <View style={[styles.row, {
                                                 maxHeight: 15,
                                                 minHeight: 15,
-
                                         }]}>
                                                 <Text style={styles.weekHeaderText}>S</Text>
                                                 <Text style={styles.weekHeaderText}>M</Text>
@@ -60,6 +61,24 @@ class MonthView extends Component {
                                         </View>
                                         {this._createDays()}
                                 </View>
+                                <Modal
+                                        animationType='slide'
+                                        onRequestClose={() => {
+                                                this.setState({ modalVisible: false })
+                                        }}
+                                        visible={this.state.modalVisible}
+                                        targetDate={this.state.targetDate}
+                                >
+                                        <View style={{
+                                                flex: 1,
+                                                justifyContent: "center",
+                                                alignItems: "center"
+                                        }}>
+                                                <Text>
+                                                        {JSON.stringify(this.state.modalTargetDate)}
+                                                </Text>
+                                        </View>
+                                </Modal>
                         </ScrollView>
                 );
         }
@@ -115,7 +134,16 @@ class MonthView extends Component {
                                         break;
                                 }
 
-                                let dayButton = (<DayButton key={key} dayNum={key + 1} value={data[key]} />);
+                                let dayButton = (<DayButton key={key} dayNum={key + 1} value={data[key]} onPress={() => {
+                                        this.setState({
+                                                modalVisible: true,
+                                                modalTargetDate: ({
+                                                        year: this.props.year,
+                                                        month: this.props.month,
+                                                        day: key + 1
+                                                })
+                                        });
+                                }} />);
 
                                 if (data[key] != null) {
                                         currentStreak.push(dayButton);
@@ -195,6 +223,7 @@ function DayButton(props) {
                                 justifyContent: "center",
                                 alignItems: "center"
                         }, props.style]}
+                        onPress={props.onPress}
                 >
                         <View style={{
                                 flex: 1,
