@@ -17,6 +17,7 @@
     "react-native": "0.70.5",
     "react-native-gesture-handler": "^2.8.0",
     "react-native-svg": "13.4.0",
+    "react-native-swipe-gestures": "^1.0.5",
     "react-native-swiper": "^1.6.0"
   },
   "devDependencies": {

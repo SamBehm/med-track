@@ -1,6 +1,9 @@
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl, Modal } from 'react-native';
 import React, { Component } from 'react';
 import { medStatusOfDate } from '../libs/localStorageHandler/localStorage';
+import GestureRecognizer from 'react-native-swipe-gestures';
+import PillButton from './PillButton';
+
 
 class MonthView extends Component {
 
@@ -65,44 +68,65 @@ class MonthView extends Component {
                                         </View>
                                         {this._createDays()}
                                 </View>
-                                <Modal
-                                        animationType='slide'
-                                        onRequestClose={() => {
-                                                this.setState({ modalVisible: false })
-                                        }}
+                                <GestureRecognizer
                                         visible={this.state.modalVisible}
-                                        targetDate={this.state.targetDate}
+                                        onSwipeDown={() => { this.setState({ modalVisible: false }) }}
+                                        style={{ flex: 0 }}
                                 >
-                                        <View style={{
-                                                flex: 1,
-                                                justifyContent: "flex-end",
-                                                alignItems: "center",
-                                                backgroundColor: (this.state.data[this.state.modalTargetDate.day - 1] ? "#4bee9a" : "grey")
-                                        }}>
-                                                <View style={{
-                                                        marginBottom: "15%",
-                                                        justifyContent: "center",
-                                                        alignItems: "center",
-                                                }}>
-                                                        <Text style={{ fontWeight: 'bold', fontSize: 40, color: "white" }}>{monthNames[this.state.modalTargetDate.month]}</Text>
-                                                        <Text style={{ fontWeight: 'bold', fontSize: 50, color: "white" }}>{this.state.modalTargetDate.day}</Text>
-                                                        {/* <Text style={{ fontWeight: 'bold', fontSize: 20, color: "white" }}>{this.state.modalTargetDate.year}</Text> */}
-                                                </View>
+                                        <Modal
+                                                animationType='slide'
+                                                onRequestClose={() => {
+                                                        this.setState({ modalVisible: false })
+                                                }}
+                                                visible={this.state.modalVisible}
+                                                targetDate={this.state.targetDate}
+                                        >
                                                 <View style={{
                                                         flex: 1,
-                                                        justifyContent: "center",
+                                                        justifyContent: "flex-end",
                                                         alignItems: "center",
-                                                        backgroundColor: "white",
-                                                        maxHeight: "70%",
-                                                        width: "100%",
-                                                        borderTopLeftRadius: 45,
-                                                        borderTopRightRadius: 45
+                                                        backgroundColor: (this.state.data[this.state.modalTargetDate.day - 1] ? "#4bee9a" : "grey")
                                                 }}>
+                                                        <View style={{
+                                                                marginBottom: "15%",
+                                                                justifyContent: "center",
+                                                                alignItems: "center",
+                                                        }}>
+                                                                <Text style={{ fontWeight: 'bold', fontSize: 40, color: "white" }}>{monthNames[this.state.modalTargetDate.month]}</Text>
+                                                                <Text style={{ fontWeight: 'bold', fontSize: 50, color: "white" }}>{this.state.modalTargetDate.day}</Text>
+                                                                {/* <Text style={{ fontWeight: 'bold', fontSize: 20, color: "white" }}>{this.state.modalTargetDate.year}</Text> */}
+                                                        </View>
+                                                        <View style={{
+                                                                flex: 1,
+                                                                flexDirection: "row",
+                                                                justifyContent: "center",
+                                                                alignItems: "center",
+                                                                backgroundColor: "white",
+                                                                maxHeight: "70%",
+                                                                width: "100%",
+                                                                borderTopLeftRadius: 45,
+                                                                borderTopRightRadius: 45
+                                                        }}>
 
+                                                                <View style={{
+                                                                        flex: 1,
+                                                                        justifyContent: "center",
+                                                                        alignItems: "center"
+                                                                }}>
 
+                                                                </View>
+                                                                <View style={{
+                                                                        flex: 1,
+                                                                        justifyContent: "center",
+                                                                        alignItems: "center",
+                                                                }}>
+
+                                                                </View>
+
+                                                        </View>
                                                 </View>
-                                        </View>
-                                </Modal>
+                                        </Modal>
+                                </GestureRecognizer>
                         </ScrollView>
                 );
         }

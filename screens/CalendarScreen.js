@@ -16,7 +16,6 @@ class CalendarScreen extends Component {
         }
 
         render() {
-                let currentDate = new Date();
 
                 return (
                         <View style={styles.container}>
