@@ -16,7 +16,14 @@ class PillButton extends Component {
 
         componentDidMount() {
                 medStatusOfDate(new Date()).then((response) => {
-                        this.setState({ medsTaken: response != null ? true : false });
+
+                        let medsStatus = response != null ? true : false;
+                        this.setState({ medsTaken: medsStatus });
+                        if (this.props.updateCaption) {
+                                this.props.updateCaption(medsStatus);
+                                console.log("updating");
+                        }
+
                 }).catch((error) => {
                         console.log(error);
                 });
@@ -37,20 +44,18 @@ class PillButton extends Component {
 
                 const style = {
                         backgroundColor: medsTaken ? '#4bee9a' : 'transparent',
+                        width: this.props.svgDimensions * 2,
+                        height: this.props.svgDimensions * 2,
+                        borderRadius: this.props.svgDimensions,
                         ...styles.circleButton
                 };
 
                 return (
-                        <View style={this.props.style}>
-                                <TouchableOpacity disabled={awaitingIO} onPress={this._updateMedStatus}>
-                                        <View style={style}>
-                                                <PillSVG width={75} height={75} color={"#4bee9a"} />
-                                        </View>
-                                </TouchableOpacity>
-                                <Text style={styles.headlineText}>
-                                        {this.state.medsTaken ? "Nice! See you tomorrow :)" : "Ready to take your meds?"}
-                                </Text>
-                        </View>
+                        <TouchableOpacity disabled={awaitingIO} onPress={this._updateMedStatus} style={this.props.style}>
+                                <View style={style}>
+                                        <PillSVG width={this.props.svgDimensions} height={this.props.svgDimensions} color={"#4bee9a"} />
+                                </View>
+                        </TouchableOpacity>
                 );
         }
 
@@ -65,10 +70,17 @@ class PillButton extends Component {
                         await setMedsTakenForDate(new Date());
                 }
 
+                if (this.props.updateCaption) {
+                        this.props.updateCaption(!this.state.medsTaken);
+                        console.log("updating");
+                }
+
                 this.setState((state) => ({
                         medsTaken: !state.medsTaken,
                         awaitingIO: false,
                 }));
+
+
         }
 
 }
@@ -78,18 +90,8 @@ const styles = StyleSheet.create({
                 flex: 0,
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: 150,
-                height: 150,
                 borderWidth: 2,
-                borderRadius: 75,
                 borderColor: '#4bee9a'
-        },
-        headlineText: {
-                textAlign: 'center',
-                width: 200,
-                fontSize: 30,
-                opacity: 0.7,
-                margin: 20
         }
 });
 
