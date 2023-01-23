@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import GestureRecognizer from 'react-native-swipe-gestures';
-import { View, Text, Modal } from "react-native";
+import { View, Text, Modal, Dimensions } from "react-native";
 import PillButton from './PillButton';
 
 
@@ -12,26 +12,45 @@ class MonthDayModal extends Component {
         }
 
         render() {
+
+                let { width, height } = Dimensions.get("window");
                 return (
+                        // <View
+                        //         style={{
+                        //                 flex: 1,
+                        //                 position: "absolute",
+                        //                 left: 0,
+                        //                 top: 0,
+                        //                 height: height,
+                        //                 width: width,
+                        //                 backgroundColor: "rgba(0,0,0,0.3)",
+                        //         }}
+                        // >
                         <GestureRecognizer
                                 visible={this.props.modalIsVisible}
                                 onSwipeDown={this.props.closeModal}
                                 style={{ flex: 0 }}
                         >
+
                                 <Modal
                                         animationType="slide"
                                         visible={this.props.modalIsVisible}
                                         onRequestClose={this.props.closeModal}
                                         targetDate={this.props.targetDate}
+                                        transparent={true}
                                 >
+
                                         <View style={{
-                                                flex: 1,
-                                                justifyContent: "flex-end",
+                                                height: "40%",
+                                                marginTop: "auto",
+                                                justifyContent: "space-evenly",
                                                 alignItems: "center",
-                                                backgroundColor: (this.props.data ? "#4bee9a" : "grey")
+                                                backgroundColor: (this.props.data ? "#4bee9a" : "grey"),
+                                                borderTopLeftRadius: 45,
+                                                borderTopRightRadius: 45
                                         }}>
                                                 <View style={{
-                                                        marginBottom: "15%",
+                                                        marginTop: "2%",
                                                         justifyContent: "center",
                                                         alignItems: "center",
                                                 }}>
@@ -45,16 +64,17 @@ class MonthDayModal extends Component {
                                                         justifyContent: "center",
                                                         alignItems: "center",
                                                         backgroundColor: "white",
-                                                        maxHeight: "70%",
-                                                        width: "100%",
-                                                        borderTopLeftRadius: 45,
-                                                        borderTopRightRadius: 45
+                                                        maxHeight: "40%",
+                                                        width: "90%",
+                                                        borderRadius: 20
                                                 }}>
-                                                        {/* Insert Stuff Here*/}
+
                                                 </View>
                                         </View>
+
                                 </Modal>
                         </GestureRecognizer>
+                        // </View>
                 )
         }
 
