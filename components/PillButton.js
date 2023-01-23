@@ -15,7 +15,7 @@ class PillButton extends Component {
         }
 
         componentDidMount() {
-                medStatusOfDate(new Date()).then((response) => {
+                medStatusOfDate(this.props.date).then((response) => {
 
                         let medsStatus = response != null ? true : false;
                         this.setState({ medsTaken: medsStatus });
@@ -65,9 +65,9 @@ class PillButton extends Component {
                 }));
 
                 if (this.state.medsTaken) {
-                        await unsetMedsTakenForDate(new Date());
+                        await unsetMedsTakenForDate(this.props.date);
                 } else {
-                        await setMedsTakenForDate(new Date());
+                        await setMedsTakenForDate(this.props.date);
                 }
 
                 if (this.props.updateCaption) {

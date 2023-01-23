@@ -20,7 +20,7 @@ export default class MainScreen extends Component {
         render() {
                 return (
                         <View style={styles.container}>
-                                <PillButton updateCaption={this.updateCaption} svgDimensions={75} />
+                                <PillButton updateCaption={this.updateCaption} svgDimensions={75} date={new Date()} />
                                 <Text style={styles.headlineText}>
                                         {this.state.medsTaken ? "Nice! See you tomorrow :)" : "Ready to take your meds?"}
                                 </Text>

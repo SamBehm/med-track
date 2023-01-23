@@ -14,6 +14,20 @@ class MonthDayModal extends Component {
         render() {
 
                 let { width, height } = Dimensions.get("window");
+                let { year, month, day } = this.props.targetDate;
+
+                let modalInfo;
+                if ((new Date(year, month, day)).getTime() > (new Date()).getTime()) {
+                        modalInfo = (
+                                <Text>Want to set a reminder?</Text>
+                        );
+                } else {
+                        modalInfo = ([
+                                <Text key={0}>{this.props.data}</Text>,
+                                <PillButton key={1} svgDimensions={40} date={new Date(year, month, day)} />
+                        ]);
+                }
+
                 return (
                         // <View
                         //         style={{
@@ -36,7 +50,6 @@ class MonthDayModal extends Component {
                                         animationType="slide"
                                         visible={this.props.modalIsVisible}
                                         onRequestClose={this.props.closeModal}
-                                        targetDate={this.props.targetDate}
                                         transparent={true}
                                 >
 
@@ -55,20 +68,21 @@ class MonthDayModal extends Component {
                                                         alignItems: "center",
                                                 }}>
                                                         <Text style={{ fontWeight: 'bold', fontSize: 40, color: "white" }}>{this.props.monthName}</Text>
-                                                        <Text style={{ fontWeight: 'bold', fontSize: 50, color: "white" }}>{this.props.targetDate.day}</Text>
+                                                        <Text style={{ fontWeight: 'bold', fontSize: 50, color: "white" }}>{day}</Text>
                                                         {/* <Text style={{ fontWeight: 'bold', fontSize: 20, color: "white" }}>{this.state.modalTargetDate.year}</Text> */}
                                                 </View>
                                                 <View style={{
                                                         flex: 1,
                                                         flexDirection: "row",
-                                                        justifyContent: "center",
+                                                        justifyContent: "space-between",
                                                         alignItems: "center",
                                                         backgroundColor: "white",
                                                         maxHeight: "40%",
                                                         width: "90%",
+                                                        padding: 20,
                                                         borderRadius: 20
                                                 }}>
-
+                                                        {modalInfo}
                                                 </View>
                                         </View>
 
