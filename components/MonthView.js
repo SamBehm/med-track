@@ -1,8 +1,7 @@
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl, Modal } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import React, { Component } from 'react';
 import { medStatusOfDate } from '../libs/localStorageHandler/localStorage';
-import GestureRecognizer from 'react-native-swipe-gestures';
-import PillButton from './PillButton';
+import MonthDayModal from './MonthDayModal';
 
 
 class MonthView extends Component {
@@ -68,65 +67,14 @@ class MonthView extends Component {
                                         </View>
                                         {this._createDays()}
                                 </View>
-                                <GestureRecognizer
-                                        visible={this.state.modalVisible}
-                                        onSwipeDown={() => { this.setState({ modalVisible: false }) }}
-                                        style={{ flex: 0 }}
-                                >
-                                        <Modal
-                                                animationType='slide'
-                                                onRequestClose={() => {
-                                                        this.setState({ modalVisible: false })
-                                                }}
-                                                visible={this.state.modalVisible}
-                                                targetDate={this.state.targetDate}
-                                        >
-                                                <View style={{
-                                                        flex: 1,
-                                                        justifyContent: "flex-end",
-                                                        alignItems: "center",
-                                                        backgroundColor: (this.state.data[this.state.modalTargetDate.day - 1] ? "#4bee9a" : "grey")
-                                                }}>
-                                                        <View style={{
-                                                                marginBottom: "15%",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                        }}>
-                                                                <Text style={{ fontWeight: 'bold', fontSize: 40, color: "white" }}>{monthNames[this.state.modalTargetDate.month]}</Text>
-                                                                <Text style={{ fontWeight: 'bold', fontSize: 50, color: "white" }}>{this.state.modalTargetDate.day}</Text>
-                                                                {/* <Text style={{ fontWeight: 'bold', fontSize: 20, color: "white" }}>{this.state.modalTargetDate.year}</Text> */}
-                                                        </View>
-                                                        <View style={{
-                                                                flex: 1,
-                                                                flexDirection: "row",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                                backgroundColor: "white",
-                                                                maxHeight: "70%",
-                                                                width: "100%",
-                                                                borderTopLeftRadius: 45,
-                                                                borderTopRightRadius: 45
-                                                        }}>
 
-                                                                <View style={{
-                                                                        flex: 1,
-                                                                        justifyContent: "center",
-                                                                        alignItems: "center"
-                                                                }}>
-
-                                                                </View>
-                                                                <View style={{
-                                                                        flex: 1,
-                                                                        justifyContent: "center",
-                                                                        alignItems: "center",
-                                                                }}>
-
-                                                                </View>
-
-                                                        </View>
-                                                </View>
-                                        </Modal>
-                                </GestureRecognizer>
+                                <MonthDayModal
+                                        modalIsVisible={this.state.modalVisible}
+                                        closeModal={() => { this.setState({ modalVisible: false }) }}
+                                        targetDate={this.state.modalTargetDate}
+                                        data={this.state.data[this.state.modalTargetDate.day - 1]}
+                                        monthName={monthNames[this.state.modalTargetDate.month]}
+                                />
                         </ScrollView>
                 );
         }
