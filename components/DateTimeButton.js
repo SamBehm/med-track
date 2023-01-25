@@ -15,18 +15,21 @@ class DateTimeButton extends Component {
 
                 return (
                         <View>
-                                <TouchableOpacity
-                                        style={{
-                                                height: 50,
-                                                justifyContent: "center",
-                                                alignItems: "center"
-                                        }}
-                                        onPress={() => { this.props.onPressHandler(true) }}
-                                >
-                                        <Text style={{ textAlign: "center", fontSize: 20 }}>
-                                                {dateString}
-                                        </Text>
-                                </TouchableOpacity>
+                                {this.props.displayTime
+                                        ? (<TouchableOpacity
+                                                style={{
+                                                        height: 50,
+                                                        justifyContent: "center",
+                                                        alignItems: "center"
+                                                }}
+                                                onPress={this.props.onPressHandler}
+                                        >
+                                                <Text style={{ textAlign: "center", fontSize: 20 }}>
+                                                        {dateString}
+                                                </Text>
+                                        </TouchableOpacity>)
+                                        : (<Text style={{ fontSize: 15 }}>No Record Found</Text>)
+                                }
                                 {this.props.show && (
                                         <DateTimePicker
                                                 value={this.props.date}
