@@ -147,28 +147,7 @@ class MonthView extends Component {
                                 }
 
                                 if (currentStreak.length > 0) {
-                                        days.push(
-                                                <View
-                                                        style={{
-                                                                flex: currentStreak.length,
-                                                                flexDirection: "row",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                        }}
-                                                        key={'s' + currentStreakID++}
-                                                >
-                                                        <View style={{
-                                                                flexDirection: "row",
-                                                                backgroundColor: "#4bee9a",
-                                                                borderRadius: 25,
-                                                                minHeight: "50%",
-                                                                justifyContent: "space-between",
-                                                                alignItems: "center",
-                                                        }}>
-                                                                {currentStreak}
-                                                        </View>
-                                                </View>
-                                        );
+                                        days = this._pushStreak(days, currentStreak, currentStreakID++);
                                         days.push(dayButton);
                                         currentStreak = [];
                                         continue;
@@ -176,6 +155,10 @@ class MonthView extends Component {
 
                                 days.push(dayButton);
 
+                        }
+
+                        if (currentStreak.length > 0) {
+                                days = this._pushStreak(days, currentStreak, currentStreakID++);
                         }
 
                         if (row == numRows - 1) {
@@ -197,7 +180,33 @@ class MonthView extends Component {
                 return rows;
         }
 
+        _pushStreak(days, currentStreak, currentStreakID) {
+                days.push(
+                        <View
+                                style={{
+                                        flex: currentStreak.length,
+                                        flexDirection: "row",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                }}
+                                key={'s' + currentStreakID}
+                        >
+                                <View style={{
+                                        flexDirection: "row",
+                                        backgroundColor: "#4bee9a",
+                                        borderRadius: 25,
+                                        minHeight: "50%",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                }}>
+                                        {currentStreak}
+                                </View>
+                        </View>
+                );
 
+                return days;
+
+        }
 
         _loadMonth() {
                 let baseDate = new Date(this.props.year, this.props.month, 1);

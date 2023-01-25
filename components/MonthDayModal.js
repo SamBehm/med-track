@@ -29,17 +29,6 @@ class MonthDayModal extends Component {
                 }
 
                 return (
-                        // <View
-                        //         style={{
-                        //                 flex: 1,
-                        //                 position: "absolute",
-                        //                 left: 0,
-                        //                 top: 0,
-                        //                 height: height,
-                        //                 width: width,
-                        //                 backgroundColor: "rgba(0,0,0,0.3)",
-                        //         }}
-                        // >
                         <GestureRecognizer
                                 visible={this.props.modalIsVisible}
                                 onSwipeDown={this.props.closeModal}
@@ -88,7 +77,6 @@ class MonthDayModal extends Component {
 
                                 </Modal>
                         </GestureRecognizer>
-                        // </View>
                 )
         }
 
