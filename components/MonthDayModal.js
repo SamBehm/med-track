@@ -22,6 +22,12 @@ class MonthDayModal extends Component {
                 let { year, month, day } = this.props.targetDate;
                 let targetDateObj = new Date(year, month, day);
 
+                if (this.props.data) {
+                        let splitTime = this.props.data.split(":");
+                        targetDateObj.setHours(parseInt(splitTime[0]));
+                        targetDateObj.setMinutes(parseInt(splitTime[1]));
+                }
+
                 let modalInfo;
                 if (targetDateObj.getTime() > (new Date()).getTime()) {
                         modalInfo = (
