@@ -41,6 +41,7 @@ class MonthDayModal extends Component {
                                         mode={'time'}
                                         show={this.state.timePickerVisible}
                                         onChangeHandler={this._updateData}
+                                        onPressHandler={this._selectTime}
                                 />,
                                 <PillButton
                                         key={2}
@@ -106,9 +107,9 @@ class MonthDayModal extends Component {
                 )
         }
 
-        _selectTime() {
+        _selectTime(dayTimeButtonPressed) {
 
-                if (this.props.data != null) {
+                if (this.props.data != null && !dayTimeButtonPressed) {
                         let { year, month, day } = this.props.targetDate;
                         let targetDate = new Date(year, month, day);
                         this.props.updateHandler(targetDate);

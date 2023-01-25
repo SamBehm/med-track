@@ -21,6 +21,7 @@ class DateTimeButton extends Component {
                                                 justifyContent: "center",
                                                 alignItems: "center"
                                         }}
+                                        onPress={() => { this.props.onPressHandler(true) }}
                                 >
                                         <Text style={{ textAlign: "center", fontSize: 20 }}>
                                                 {dateString}
