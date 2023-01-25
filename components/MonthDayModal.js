@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import GestureRecognizer from 'react-native-swipe-gestures';
-import { View, Text, Modal, Dimensions } from "react-native";
+import { View, Text, Modal } from "react-native";
 import PillButton from './PillButton';
 
 
@@ -13,16 +13,25 @@ class MonthDayModal extends Component {
 
         render() {
                 let { year, month, day } = this.props.targetDate;
+                let targetDateObj = new Date(year, month, day);
 
                 let modalInfo;
-                if ((new Date(year, month, day)).getTime() > (new Date()).getTime()) {
+                if (targetDateObj.getTime() > (new Date()).getTime()) {
                         modalInfo = (
                                 <Text>Want to set a reminder?</Text>
                         );
                 } else {
                         modalInfo = ([
                                 <Text key={0}>{this.props.data}</Text>,
-                                <PillButton key={1} svgDimensions={40} date={new Date(year, month, day)} />
+                                <PillButton
+                                        key={1}
+                                        svgDimensions={40}
+                                        medsTaken={this.props.data}
+                                        awaitingIO={this.props.awaitingIO}
+                                        onPressHandler={() => {
+                                                this.props.pillButtonHandler(targetDateObj);
+                                        }}
+                                />
                         ]);
                 }
 

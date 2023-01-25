@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import React, { Component } from 'react';
-import { medStatusOfDate } from '../libs/localStorageHandler/localStorage';
+import { medStatusOfDate, setMedsTakenForDate, unsetMedsTakenForDate } from '../libs/localStorageHandler/localStorage';
 import MonthDayModal from './MonthDayModal';
 
 
@@ -19,10 +19,12 @@ class MonthView extends Component {
                                 month: null,
                                 day: null
                         },
+                        awaitingIO: false
                 }
 
                 this._loadMonth = this._loadMonth.bind(this);
                 this._onRefresh = this._onRefresh.bind(this);
+                this._updateMedStatusOfDay = this._updateMedStatusOfDay.bind(this);
         }
 
         componentDidMount() {
@@ -74,6 +76,8 @@ class MonthView extends Component {
                                         targetDate={this.state.modalTargetDate}
                                         data={this.state.data[this.state.modalTargetDate.day - 1]}
                                         monthName={monthNames[this.state.modalTargetDate.month]}
+                                        awaitingIO={this.state.awaitingIO}
+                                        pillButtonHandler={this._updateMedStatusOfDay}
                                 />
                         </ScrollView>
                 );
@@ -208,6 +212,29 @@ class MonthView extends Component {
 
         }
 
+        async _updateMedStatusOfDay(date) {
+                this.setState({ awaitingIO: true });
+
+                let newTime = null;
+
+                if (this.state.data[date.getDate() - 1]) {
+                        await unsetMedsTakenForDate(date);
+                } else {
+                        newTime = await setMedsTakenForDate(date);
+                }
+
+                console.log(date);
+                console.log(newTime);
+
+                let newData = this.state.data;
+                newData[date.getDate() - 1] = newTime;
+
+                this.setState({
+                        data: newData,
+                        awaitingIO: false,
+                });
+        }
+
         _loadMonth() {
                 let baseDate = new Date(this.props.year, this.props.month, 1);
                 let promises = [];
@@ -215,7 +242,6 @@ class MonthView extends Component {
                         promises.push(medStatusOfDate(new Date(baseDate)));
                         baseDate.setDate(baseDate.getDate() + 1);
                 }
-
                 return promises;
         }
 }
