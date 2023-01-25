@@ -22,7 +22,6 @@ export default class MainScreen extends Component {
         }
 
         render() {
-                console.log(this.state.medsTaken);
                 return (
                         <View style={styles.container}>
                                 <PillButton

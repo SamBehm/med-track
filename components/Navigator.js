@@ -25,7 +25,8 @@ export default function Navigator() {
                                                                 <PillSVG width={25} height={25} color={strokeColor} opacity={opacity} />
                                                         );
                                                 },
-                                                tabBarActiveTintColor: 'green'
+                                                tabBarActiveTintColor: 'green',
+                                                unmountOnBlur: true
                                         }}
                                 />
                                 <Tab.Screen

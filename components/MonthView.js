@@ -223,9 +223,6 @@ class MonthView extends Component {
                         newTime = await setMedsTakenForDate(date);
                 }
 
-                console.log(date);
-                console.log(newTime);
-
                 let newData = this.state.data;
                 newData[date.getDate() - 1] = newTime;
 
