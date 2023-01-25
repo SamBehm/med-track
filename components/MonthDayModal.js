@@ -12,8 +12,6 @@ class MonthDayModal extends Component {
         }
 
         render() {
-
-                let { width, height } = Dimensions.get("window");
                 let { year, month, day } = this.props.targetDate;
 
                 let modalInfo;

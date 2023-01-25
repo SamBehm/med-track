@@ -1,31 +1,57 @@
 import { StyleSheet, View, Text } from 'react-native';
 import PillButton from '../components/PillButton';
 import React, { Component } from 'react';
+import { medStatusOfDate, setMedsTakenForDate, unsetMedsTakenForDate } from '../libs/localStorageHandler/localStorage';
 
 export default class MainScreen extends Component {
 
         constructor(props) {
                 super(props);
 
-                this.state = { medsTaken: null };
-                this.updateCaption = this.updateCaption.bind(this);
+                this.state = { medsTaken: null, awaitingIO: true };
+
+                this._updateMedStatus = this._updateMedStatus.bind(this);
         }
 
-        updateCaption(medStatus) {
-                this.setState({
-                        medsTaken: medStatus
+        componentDidMount() {
+                medStatusOfDate(new Date()).then((response) => {
+                        this.setState({ medsTaken: response == null ? false : true, awaitingIO: false });
+                }).catch((error) => {
+                        console.log(error);
                 });
         }
 
         render() {
                 return (
                         <View style={styles.container}>
-                                <PillButton updateCaption={this.updateCaption} svgDimensions={75} date={new Date()} />
+                                <PillButton svgDimensions={75} medsTaken={this.state.medsTaken} onPressHandler={this._updateMedStatus} />
                                 <Text style={styles.headlineText}>
-                                        {this.state.medsTaken ? "Nice! See you tomorrow :)" : "Ready to take your meds?"}
+                                        {this.state.medsTaken == null || this.state.awaitingIO
+                                                ? "Loading..."
+                                                : (this.state.medsTaken
+                                                        ? "Nice! See you tomorrow :)"
+                                                        : "Ready to take your meds?")
+                                        }
                                 </Text>
                         </View>
                 );
+        }
+
+        async _updateMedStatus() {
+                this.setState(() => ({
+                        awaitingIO: true
+                }));
+
+                if (this.state.medsTaken) {
+                        await unsetMedsTakenForDate(new Date());
+                } else {
+                        await setMedsTakenForDate(new Date());
+                }
+
+                this.setState((state) => ({
+                        medsTaken: !state.medsTaken,
+                        awaitingIO: false,
+                }));
         }
 }
 
