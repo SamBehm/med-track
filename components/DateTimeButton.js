@@ -8,14 +8,11 @@ class DateTimeButton extends Component {
                 super(props);
 
                 this.state = {
-                        show: this.props.key,
-                        date: this.props.date,
-                        mode: this.props.mode
+                        date: this.props.date
                 }
         }
 
         render() {
-
                 return (
                         <View>
                                 <TouchableOpacity
@@ -30,10 +27,10 @@ class DateTimeButton extends Component {
                                                 {this.state.date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                                         </Text>
                                 </TouchableOpacity>
-                                {this.state.show && (
+                                {this.props.show && (
                                         <DateTimePicker
                                                 value={this.state.date}
-                                                mode={this.state.mode}
+                                                mode={this.props.mode}
                                                 is24Hour={false}
                                                 onChange={this.props.onChangeHandler}
                                         />

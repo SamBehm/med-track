@@ -77,7 +77,7 @@ class MonthView extends Component {
                                         data={this.state.data[this.state.modalTargetDate.day - 1]}
                                         monthName={monthNames[this.state.modalTargetDate.month]}
                                         awaitingIO={this.state.awaitingIO}
-                                        pillButtonHandler={this._updateMedStatusOfDay}
+                                        updateHandler={this._updateMedStatusOfDay}
                                 />
                         </ScrollView>
                 );

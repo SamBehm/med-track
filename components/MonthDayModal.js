@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { View, Text, Modal } from "react-native";
 import PillButton from './PillButton';
+import DateTimeButton from "./DateTimeButton";
 
 
 
@@ -9,6 +10,12 @@ class MonthDayModal extends Component {
 
         constructor(props) {
                 super(props);
+                this.state = {
+                        timePickerVisible: false
+                }
+
+                this._selectTime = this._selectTime.bind(this);
+                this._updateData = this._updateData.bind(this);
         }
 
         render() {
@@ -22,15 +29,19 @@ class MonthDayModal extends Component {
                         );
                 } else {
                         modalInfo = ([
-                                <Text key={0}>{this.props.data}</Text>,
-                                <PillButton
+                                <DateTimeButton
                                         key={1}
+                                        date={targetDateObj}
+                                        mode={'time'}
+                                        show={this.state.timePickerVisible}
+                                        onChangeHandler={this._updateData}
+                                />,
+                                <PillButton
+                                        key={2}
                                         svgDimensions={40}
                                         medsTaken={this.props.data}
                                         awaitingIO={this.props.awaitingIO}
-                                        onPressHandler={() => {
-                                                this.props.pillButtonHandler(targetDateObj);
-                                        }}
+                                        onPressHandler={this._selectTime}
                                 />
                         ]);
                 }
@@ -41,11 +52,13 @@ class MonthDayModal extends Component {
                                 onSwipeDown={this.props.closeModal}
                                 style={{ flex: 0 }}
                         >
-
                                 <Modal
                                         animationType="slide"
                                         visible={this.props.modalIsVisible}
-                                        onRequestClose={this.props.closeModal}
+                                        onRequestClose={() => {
+                                                this.setState({ timePickerVisible: false });
+                                                this.props.closeModal();
+                                        }}
                                         transparent={true}
                                 >
 
@@ -85,6 +98,33 @@ class MonthDayModal extends Component {
                                 </Modal>
                         </GestureRecognizer>
                 )
+        }
+
+        _selectTime() {
+
+                if (this.props.data != null) {
+                        let { year, month, day } = this.props.targetDate;
+                        let targetDate = new Date(year, month, day);
+                        this.props.updateHandler(targetDate);
+                        return;
+                }
+
+                this.setState({
+                        timePickerVisible: true
+                });
+        }
+
+        _updateData(event, date) {
+
+                this.setState({
+                        timePickerVisible: false
+                });
+
+                if (event.type != 'set') {
+                        return;
+                }
+
+                this.props.updateHandler(date);
         }
 
 }
