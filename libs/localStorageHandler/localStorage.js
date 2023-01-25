@@ -24,9 +24,11 @@ export async function medStatusOfDate(date) {
 export async function setMedsTakenForDate(date) {
         try {
                 let value = `${date.getHours()}:${date.getMinutes()}`;
-                return await AsyncStorage.setItem(getDateKey(date), value);
+                await AsyncStorage.setItem(getDateKey(date), value);
+                return value;
         } catch (e) {
-                // error
+                console.log(e);
+                return -1;
         }
 }
 

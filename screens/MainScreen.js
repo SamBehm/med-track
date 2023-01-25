@@ -15,18 +15,24 @@ export default class MainScreen extends Component {
 
         componentDidMount() {
                 medStatusOfDate(new Date()).then((response) => {
-                        this.setState({ medsTaken: response == null ? false : true, awaitingIO: false });
+                        this.setState({ medsTaken: response, awaitingIO: false });
                 }).catch((error) => {
                         console.log(error);
                 });
         }
 
         render() {
+                console.log(this.state.medsTaken);
                 return (
                         <View style={styles.container}>
-                                <PillButton svgDimensions={75} medsTaken={this.state.medsTaken} onPressHandler={this._updateMedStatus} />
+                                <PillButton
+                                        svgDimensions={75}
+                                        medsTaken={this.state.medsTaken}
+                                        awaitingIO={this.state.awaitingIO}
+                                        onPressHandler={this._updateMedStatus}
+                                />
                                 <Text style={styles.headlineText}>
-                                        {this.state.medsTaken == null || this.state.awaitingIO
+                                        {(this.state.medsTaken == null && this.state.awaitingIO)
                                                 ? "Loading..."
                                                 : (this.state.medsTaken
                                                         ? "Nice! See you tomorrow :)"
@@ -42,16 +48,19 @@ export default class MainScreen extends Component {
                         awaitingIO: true
                 }));
 
+                let date = new Date();
+                let newTime = null;
+
                 if (this.state.medsTaken) {
-                        await unsetMedsTakenForDate(new Date());
+                        await unsetMedsTakenForDate(date);
                 } else {
-                        await setMedsTakenForDate(new Date());
+                        newTime = await setMedsTakenForDate(date);
                 }
 
-                this.setState((state) => ({
-                        medsTaken: !state.medsTaken,
+                this.setState({
+                        medsTaken: newTime,
                         awaitingIO: false,
-                }));
+                });
         }
 }
 

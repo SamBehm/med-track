@@ -17,7 +17,7 @@ class PillButton extends Component {
                         ...styles.circleButton
                 };
 
-                if (this.props.medsTaken == null) {
+                if (this.props.medsTaken == null && this.props.awaitingIO) {
                         return (
                                 <View style={style}>
                                         <Text style={{ fontSize: 20, textAlign: "center" }}>Loading...</Text>
