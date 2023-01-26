@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import React, { Component } from 'react';
 
 class WeekView extends Component {
@@ -20,7 +20,9 @@ class WeekView extends Component {
                 }
 
                 return (
-                        <View></View>
+                        <View>
+                                <Text>{this.props.date.toString()}</Text>
+                        </View>
                 );
         }
 
