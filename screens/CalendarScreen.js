@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import WeekView from '../components/WeekView';
 import MonthSwiper from '../components/MonthSwiper';
+import WeekSwiper from '../components/WeekSwiper';
 
 class CalendarScreen extends Component {
 
@@ -23,7 +24,7 @@ class CalendarScreen extends Component {
                                         {
                                                 this.state.view == 'month'
                                                         ? <MonthSwiper />
-                                                        : (<WeekView />)
+                                                        : <WeekSwiper />
                                         }
                                 </View>
                                 <View style={[styles.controller, styles.shadow]}>

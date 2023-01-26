@@ -7,7 +7,6 @@ import MonthDayModal from './MonthDayModal';
 class MonthView extends Component {
 
         constructor(props) {
-                View
                 super(props);
 
                 this.state = {
