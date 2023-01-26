@@ -20,7 +20,7 @@ class CalendarScreen extends Component {
 
                 return (
                         <View style={styles.container}>
-                                <View style={styles.monthSwiper}>
+                                <View style={styles.swiper}>
                                         {
                                                 this.state.view == 'month'
                                                         ? <MonthSwiper />
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
                 justifyContent: 'center',
                 alignItems: 'center'
         },
-        monthSwiper: {
+        swiper: {
                 flex: 8,
                 justifyContent: "center",
                 alignItems: "center",

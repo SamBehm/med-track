@@ -38,10 +38,11 @@ class WeekSwiper extends Component {
                                 showsPagination={false}
                                 onIndexChanged={(i) => this._onPageChange(i)}
                                 style={{
-                                        minHeight: "90%",
+                                        height: "100%",
                                         justifyContent: "center",
                                         alignItems: "center"
                                 }}
+                                nestedScrollEnabled={true}
                         >
                                 {this.state.displayWeeks.map((element, index) => {
                                         return (
