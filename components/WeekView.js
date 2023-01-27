@@ -12,20 +12,23 @@ class WeekView extends Component {
                 this.state = {
                         data: null,
                         refreshing: false,
-                        awaitingIO: false,
+                        awaitingIO: true,
                         timePickerStatus: [false, false, false, false, false, false, false]
                 }
 
                 this._loadWeek = this._loadWeek.bind(this);
                 this._createDayContainers = this._createDayContainers.bind(this);
                 this._selectTime = this._selectTime.bind(this);
+                this._dateTimeChangeHandler = this._dateTimeChangeHandler.bind(this);
+                this._updateMedStatusOfDate = this._updateMedStatusOfDate.bind(this);
         }
 
         componentDidMount() {
                 let promises = this._loadWeek();
                 Promise.all(promises).then((values) => {
                         this.setState({
-                                data: values
+                                data: values,
+                                awaitingIO: false
                         });
                 })
         }
@@ -74,6 +77,12 @@ class WeekView extends Component {
                                 });
                         }
 
+                        if (this.state.data && this.state.data[i]) {
+                                let splitTime = this.state.data[i].split(":");
+                                date.setHours(parseInt(splitTime[0]));
+                                date.setMinutes(parseInt(splitTime[1]));
+                        }
+
                         dayContainers.push(
                                 <View style={style} key={i}>
                                         <View style={styles.dayHeaderContainer}>
@@ -85,6 +94,18 @@ class WeekView extends Component {
                                                 </Text>
                                         </View>
                                         <View style={styles.dateTimePickerContainer}>
+                                                <DateTimeButton
+                                                        date={date}
+                                                        mode={'time'}
+                                                        show={this.state.timePickerStatus[i]}
+                                                        onChangeHandler={(event, date) => { this._dateTimeChangeHandler(event, date, i) }}
+                                                        onPressHandler={() => {
+                                                                let newTimePickerStatus = this.state.timePickerStatus;
+                                                                newTimePickerStatus[i] = !newTimePickerStatus[i];
+                                                                this.setState({ timePickerStatus: newTimePickerStatus })
+                                                        }}
+                                                        displayTime={this.state.data == null ? false : this.state.data[i]}
+                                                />
                                         </View>
                                         <PillButton
                                                 svgDimensions={20}
@@ -103,7 +124,7 @@ class WeekView extends Component {
         _loadWeek() {
                 let promises = [];
 
-                let baseDate = this.props.date;
+                let baseDate = new Date(this.props.date.getTime());
                 for (let i = 0; i < 7; i++) {
                         promises.push(medStatusOfDate(new Date(baseDate)));
                         baseDate.setDate(baseDate.getDate() + 1);
@@ -112,13 +133,27 @@ class WeekView extends Component {
                 return promises;
         }
 
+        _dateTimeChangeHandler(event, date, index) {
+                let newTimePickerStatus = this.state.timePickerStatus;
+                newTimePickerStatus[index] = false;
+                this.setState({
+                        newTimePickerStatus
+                });
+
+                if (event.type != 'set') {
+                        return;
+                }
+
+                this._updateMedStatusOfDate(date);
+        }
+
         _selectTime(index) {
                 let data = this.state.data[index];
 
-                if (data != null) {
+                if (data) {
                         let targetDate = new Date(this.props.date.getTime());
                         targetDate.setDate(targetDate.getDate() + index);
-                        this._updateMedStatusOfDate();
+                        this._updateMedStatusOfDate(targetDate);
                         return;
                 }
 

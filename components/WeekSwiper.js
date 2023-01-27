@@ -12,7 +12,7 @@ class WeekSwiper extends Component {
                 let date = new Date();
                 let weekDayOffset = date.getDay();
 
-                date.setDate(date.getDate() - weekDayOffset - 7);
+                date.setDate(date.getDate() - (weekDayOffset + 7));
 
                 let weeks = [];
                 for (let i = 0; i < 3; i++) {
@@ -41,9 +41,9 @@ class WeekSwiper extends Component {
                                         alignItems: "center"
                                 }}
                         >
-                                {this.state.displayWeeks.map((element, index) => {
+                                {this.state.displayWeeks.map((element, i) => {
                                         return (
-                                                <WeekView key={index} date={new Date(element[0], element[1], element[2])} />
+                                                <WeekView key={i} date={new Date(element[0], element[1], element[2])} index={i} />
                                         )
                                 })}
                         </Swiper>
@@ -51,6 +51,7 @@ class WeekSwiper extends Component {
         }
 
         _onPageChange(index) {
+
                 if (index == 1) {
                         return;
                 }
