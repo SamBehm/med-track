@@ -28,11 +28,19 @@ class WeekView extends Component {
 
         render() {
                 const dayContainers = this._createDayContainers();
+                let left = `${monthNames[this.props.date.getMonth()].substring(0, 3)} ${this.props.date.getDate()}`;
+                let finalDate = new Date(this.props.date.getTime());
+                finalDate.setDate(finalDate.getDate() + 7);
+                let right = `${monthNames[finalDate.getMonth()].substring(0, 3)} ${finalDate.getDate()}`;
+                const headerSubText = left + ' - ' + right;
                 return (
                         <View style={styles.container}>
                                 <View style={styles.headerView}>
                                         <View style={[styles.headerBubble, styles.shadow]}>
                                                 <Text style={{ fontSize: 30, fontWeight: "bold" }}>{monthNames[this.props.date.getMonth()]}</Text>
+                                                <Text style={{ fontSize: 15, fontWeight: "bold", opacity: 0.5 }}>
+                                                        {headerSubText}
+                                                </Text>
                                         </View>
                                 </View>
                                 {
@@ -102,6 +110,8 @@ const styles = StyleSheet.create({
                 marginTop: "12%",
         },
         headerBubble: {
+                justifyContent: "center",
+                alignItems: "center",
                 backgroundColor: "white",
                 paddingVertical: "5%",
                 paddingHorizontal: "10%",
