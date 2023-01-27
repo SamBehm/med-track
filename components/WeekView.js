@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
-import { medStatusOfDate } from '../libs/localStorageHandler/localStorage';
+import { medStatusOfDate, setMedsTakenForDate, unsetMedsTakenForDate } from '../libs/localStorageHandler/localStorage';
+import PillButton from './PillButton';
+import DateTimeButton from './DateTimeButton';
 
 class WeekView extends Component {
 
@@ -10,11 +12,13 @@ class WeekView extends Component {
                 this.state = {
                         data: null,
                         refreshing: false,
-                        awaitingIO: false
+                        awaitingIO: false,
+                        timePickerStatus: [false, false, false, false, false, false, false]
                 }
 
                 this._loadWeek = this._loadWeek.bind(this);
                 this._createDayContainers = this._createDayContainers.bind(this);
+                this._selectTime = this._selectTime.bind(this);
         }
 
         componentDidMount() {
@@ -27,12 +31,13 @@ class WeekView extends Component {
         }
 
         render() {
-                const dayContainers = this._createDayContainers();
+
                 let left = `${monthNames[this.props.date.getMonth()].substring(0, 3)} ${this.props.date.getDate()}`;
                 let finalDate = new Date(this.props.date.getTime());
                 finalDate.setDate(finalDate.getDate() + 7);
                 let right = `${monthNames[finalDate.getMonth()].substring(0, 3)} ${finalDate.getDate()}`;
                 const headerSubText = left + ' - ' + right;
+
                 return (
                         <View style={styles.container}>
                                 <View style={styles.headerView}>
@@ -44,7 +49,7 @@ class WeekView extends Component {
                                         </View>
                                 </View>
                                 {
-                                        dayContainers
+                                        this._createDayContainers()
                                 }
                         </View>
                 );
@@ -72,9 +77,22 @@ class WeekView extends Component {
                         dayContainers.push(
                                 <View style={style} key={i}>
                                         <View style={styles.dayHeaderContainer}>
-
+                                                <Text style={{ fontSize: 25, fontWeight: "bold", textAlign: "center" }}>
+                                                        {date.getDate()}
+                                                </Text>
+                                                <Text style={{ fontSize: 15, fontWeight: "bold", textAlign: "center", opacity: 0.5 }}>
+                                                        {monthNames[date.getMonth()].substring(0, 3)}
+                                                </Text>
                                         </View>
-                                        <View></View>
+                                        <View style={styles.dateTimePickerContainer}>
+                                        </View>
+                                        <PillButton
+                                                svgDimensions={20}
+                                                medsTaken={this.state.data == null ? null : this.state.data[i]}
+                                                awaitingIO={this.state.awaitingIO}
+                                                onPressHandler={() => { this._selectTime(i) }}
+                                                style={{ marginHorizontal: 5 }}
+                                        />
                                 </View>
                         )
                 }
@@ -92,6 +110,43 @@ class WeekView extends Component {
                 }
 
                 return promises;
+        }
+
+        _selectTime(index) {
+                let data = this.state.data[index];
+
+                if (data != null) {
+                        let targetDate = new Date(this.props.date.getTime());
+                        targetDate.setDate(targetDate.getDate() + index);
+                        this._updateMedStatusOfDate();
+                        return;
+                }
+
+                let timePickerStatus = this.state.timePickerStatus;
+                timePickerStatus[index] = true;
+                this.setState({ timePickerStatus: timePickerStatus });
+        }
+
+        async _updateMedStatusOfDate(date) {
+
+                this.setState({ awaitingIO: true });
+
+                let index = date.getDay();
+                let newTime = null;
+
+                if (this.state.data[index] != null) {
+                        await unsetMedsTakenForDate(date);
+                } else {
+                        newTime = await setMedsTakenForDate(date);
+                }
+
+                let newData = this.state.data;
+                newData[index] = newTime;
+
+                this.setState({
+                        data: newData,
+                        awaitingIO: false,
+                });
         }
 
 }
@@ -124,7 +179,7 @@ const styles = StyleSheet.create({
                 flexDirection: "row",
                 backgroundColor: "white",
                 width: "90%",
-                marginVertical: 10,
+                marginVertical: 5,
                 borderRadius: 25,
         },
         dayHeaderContainer: {
@@ -133,7 +188,14 @@ const styles = StyleSheet.create({
                 alignItems: "center",
                 borderRightWidth: 1,
                 borderRightColor: 'grey',
-                height: "50%"
+                height: "50%",
+                paddingHorizontal: 7
+        },
+        dateTimePickerContainer: {
+                flex: 5,
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
         },
         shadow: {
                 shadowColor: "#000000",

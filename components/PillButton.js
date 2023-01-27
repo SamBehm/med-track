@@ -14,7 +14,8 @@ class PillButton extends Component {
                         width: this.props.svgDimensions * 2,
                         height: this.props.svgDimensions * 2,
                         borderRadius: this.props.svgDimensions,
-                        ...styles.circleButton
+                        ...styles.circleButton,
+                        ...this.props.style
                 };
 
                 if (this.props.medsTaken == null && this.props.awaitingIO) {
