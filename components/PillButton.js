@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import AnimatedLoadCircle from './AnimatedLoadCircle';
 import { PillSVG } from './SVGs';
 
 class PillButton extends Component {
@@ -21,7 +22,7 @@ class PillButton extends Component {
                 if (this.props.medsTaken == null && this.props.awaitingIO) {
                         return (
                                 <View style={style}>
-                                        <Text style={{ fontSize: 20, textAlign: "center" }}>Loading...</Text>
+                                        <AnimatedLoadCircle diameter={this.props.svgDimensions} />
                                 </View>
                         );
 
