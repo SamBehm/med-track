@@ -1,6 +1,5 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
-import WeekView from '../components/WeekView';
 import MonthSwiper from '../components/MonthSwiper';
 import WeekSwiper from '../components/WeekSwiper';
 
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
                 width: "100%"
         },
         controller: {
-                flex: 1,
+                flex: 0.7,
                 width: "100%",
                 justifyContent: "space-between",
                 alignItems: "center",

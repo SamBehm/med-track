@@ -10,14 +10,13 @@ class WeekSwiper extends Component {
                 super(props);
 
                 let date = new Date();
-                const weekStartOffset = date.getDay();
+                let weekDayOffset = date.getDay();
 
-                // set date to sunday before last/current
-                date.setDate(date.getDate() - weekStartOffset - 7);
+                date.setDate(date.getDate() - weekDayOffset - 7);
 
                 let weeks = [];
                 for (let i = 0; i < 3; i++) {
-                        weeks.push(new Date(date));
+                        weeks.push([date.getFullYear(), date.getMonth(), date.getDate()]);
                         date.setDate(date.getDate() + 7);
                 }
 
@@ -25,11 +24,10 @@ class WeekSwiper extends Component {
                         displayWeeks: weeks,
                         key: 1
                 }
-
-                this._onPageChange = this._onPageChange.bind(this);
         }
 
         render() {
+
                 return (
                         <Swiper
                                 index={1}
@@ -42,11 +40,10 @@ class WeekSwiper extends Component {
                                         justifyContent: "center",
                                         alignItems: "center"
                                 }}
-                                nestedScrollEnabled={true}
                         >
                                 {this.state.displayWeeks.map((element, index) => {
                                         return (
-                                                <WeekView key={index} date={element} />
+                                                <WeekView key={index} date={new Date(element[0], element[1], element[2])} />
                                         )
                                 })}
                         </Swiper>
@@ -55,27 +52,31 @@ class WeekSwiper extends Component {
 
         _onPageChange(index) {
                 if (index == 1) {
-                        return
+                        return;
                 }
 
-                let currDisplayWeeks = this.state.displayWeeks;
                 let newDisplayWeeks;
-                let newDate = currDisplayWeeks[index];
+                let currentDisplayWeeks = this.state.displayWeeks;
+                let temp = [...currentDisplayWeeks[index]];
+                temp[2] += (7 * (index - 1));
 
-                if (index == 0) {
-                        newDate.setDate(newDate.getDate() - 7);
-                        newDisplayWeeks = [newDate, currDisplayWeeks[0], currDisplayWeeks[1]];
+                if (index > 1) {
+                        newDisplayWeeks = [currentDisplayWeeks[1], currentDisplayWeeks[2], updateDateValues(temp)];
                 } else {
-                        newDate.setDate(newDate.getDate() + 7);
-                        newDisplayWeeks = [currDisplayWeeks[1], currDisplayWeeks[2], newDate];
+                        newDisplayWeeks = [updateDateValues(temp), currentDisplayWeeks[0], currentDisplayWeeks[1]];
                 }
 
                 this.setState((state) => ({
                         displayWeeks: newDisplayWeeks,
                         key: ((state.key + 1) % 2)
-                }))
+                }));
         }
 
+}
+
+function updateDateValues(weekDate) {
+        let date = new Date(weekDate[0], weekDate[1], weekDate[2]);
+        return [date.getFullYear(), date.getMonth(), date.getDate()];
 }
 
 export default WeekSwiper;

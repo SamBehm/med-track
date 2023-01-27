@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import { medStatusOfDate } from '../libs/localStorageHandler/localStorage';
 
@@ -27,13 +27,16 @@ class WeekView extends Component {
         }
 
         render() {
+                const dayContainers = this._createDayContainers();
                 return (
                         <View style={styles.container}>
-                                <View style={styles.header}>
-                                        <Text style={{ fontSize: 30 }}>Date - Date</Text>
+                                <View style={styles.headerView}>
+                                        <View style={[styles.headerBubble, styles.shadow]}>
+                                                <Text style={{ fontSize: 30, fontWeight: "bold" }}>{monthNames[this.props.date.getMonth()]}</Text>
+                                        </View>
                                 </View>
                                 {
-                                        this._createDayContainers()
+                                        dayContainers
                                 }
                         </View>
                 );
@@ -42,11 +45,28 @@ class WeekView extends Component {
         _createDayContainers() {
                 let dayContainers = [];
                 for (let i = 0; i < 7; i++) {
+                        let style = [styles.dayContainer, styles.shadow];
+
+                        let date = new Date(this.props.date.getTime());
+                        date.setDate(date.getDate() + i);
+                        date.setHours(0, 0, 0, 0);
+
+                        let today = new Date();
+                        today.setHours(0, 0, 0, 0);
+
+                        if (date.getTime() == today.getTime()) {
+                                style.push({
+                                        borderWidth: 2,
+                                        borderColor: '#4bee9a'
+                                });
+                        }
+
                         dayContainers.push(
-                                <View style={styles.dayContainer} key={i}>
+                                <View style={style} key={i}>
                                         <View style={styles.dayHeaderContainer}>
 
                                         </View>
+                                        <View></View>
                                 </View>
                         )
                 }
@@ -74,23 +94,28 @@ const styles = StyleSheet.create({
                 justifyContent: "flex-start",
                 alignItems: "center"
         },
-        header: {
-                flex: 1,
-                minHeight: "15%",
-                backgroundColor: "white",
+        headerView: {
+                flex: 8 / 5,
+                justifyContent: 'center',
+                alignItems: 'center',
                 width: "100%",
-                justifyContent: "center",
-                alignItems: "center"
+                marginTop: "12%",
+        },
+        headerBubble: {
+                backgroundColor: "white",
+                paddingVertical: "5%",
+                paddingHorizontal: "10%",
+                borderRadius: 25,
         },
         dayContainer: {
                 flex: 1,
-                minHeight: "14%",
                 justifyContent: "space-between",
                 alignItems: "center",
                 flexDirection: "row",
                 backgroundColor: "white",
                 width: "90%",
-                marginTop: 20
+                marginVertical: 10,
+                borderRadius: 25,
         },
         dayHeaderContainer: {
                 flex: 1,
@@ -98,10 +123,21 @@ const styles = StyleSheet.create({
                 alignItems: "center",
                 borderRightWidth: 1,
                 borderRightColor: 'grey',
-                height: "70%"
+                height: "50%"
+        },
+        shadow: {
+                shadowColor: "#000000",
+                shadowOpacity: 1,
+                shadowRadius: 2,
+                shadowOffset: {
+                        height: 1,
+                        width: 1
+                },
+                elevation: 3
         }
 });
 
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 export default WeekView;
