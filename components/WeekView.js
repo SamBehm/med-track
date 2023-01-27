@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import React, { Component } from 'react';
 import { medStatusOfDate, setMedsTakenForDate, unsetMedsTakenForDate } from '../libs/localStorageHandler/localStorage';
 import PillButton from './PillButton';
@@ -21,6 +21,7 @@ class WeekView extends Component {
                 this._selectTime = this._selectTime.bind(this);
                 this._dateTimeChangeHandler = this._dateTimeChangeHandler.bind(this);
                 this._updateMedStatusOfDate = this._updateMedStatusOfDate.bind(this);
+                this._onRefresh = this._onRefresh.bind(this);
         }
 
         componentDidMount() {
@@ -42,19 +43,39 @@ class WeekView extends Component {
                 const headerSubText = left + ' - ' + right;
 
                 return (
-                        <View style={styles.container}>
-                                <View style={styles.headerView}>
-                                        <View style={[styles.headerBubble, styles.shadow]}>
-                                                <Text style={{ fontSize: 30, fontWeight: "bold" }}>{monthNames[this.props.date.getMonth()]}</Text>
-                                                <Text style={{ fontSize: 15, fontWeight: "bold", opacity: 0.5 }}>
-                                                        {headerSubText}
-                                                </Text>
-                                        </View>
-                                </View>
-                                {
-                                        this._createDayContainers()
+                        <ScrollView
+                                contentContainerStyle={styles.container}
+                                refreshControl={
+                                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />
                                 }
-                        </View>
+                        >
+                                <View style={styles.container}>
+                                        <View style={styles.headerView}>
+                                                <View style={[styles.headerBubble, styles.shadow]}>
+                                                        <Text
+                                                                style={{
+                                                                        fontSize: 30,
+                                                                        fontWeight: "bold"
+                                                                }}
+                                                        >
+                                                                {monthNames[this.props.date.getMonth()]}
+                                                        </Text>
+                                                        <Text
+                                                                style={{
+                                                                        fontSize: 15,
+                                                                        fontWeight: "bold",
+                                                                        opacity: 0.5
+                                                                }}
+                                                        >
+                                                                {headerSubText}
+                                                        </Text>
+                                                </View>
+                                        </View>
+                                        {
+                                                this._createDayContainers()
+                                        }
+                                </View>
+                        </ScrollView>
                 );
         }
 
@@ -131,6 +152,17 @@ class WeekView extends Component {
                 }
 
                 return promises;
+        }
+
+        _onRefresh() {
+                this.setState({ refreshing: true });
+                let promises = this._loadWeek();
+                Promise.all(promises).then((values) => {
+                        this.setState(() => ({
+                                data: values,
+                                refreshing: false
+                        }));
+                });
         }
 
         _dateTimeChangeHandler(event, date, index) {
