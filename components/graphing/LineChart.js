@@ -22,13 +22,35 @@ function LineChart(props) {
         });
 
         let connectingLines = [];
-        dataPoints.forEach((element, index) => {
+        for (let i = 1; i < dataPoints.length; i++) {
+                const p1 = dataPoints[i - 1];
+                const p2 = dataPoints[i];
+
+                const dx = p2.x - p1.x;
+                const dy = p2.y - p1.y;
+                const theta = Math.atan(dy / dx);
+
+                const ry = (props.pointRadius * Math.sin(theta));
+                const rx = (props.pointRadius * Math.cos(theta));
+
+                const x1 = p1.x + rx;
+                const y1 = p1.y + ry;
+
+                const x2 = p2.x - rx;
+                const y2 = p2.y - ry;
+
                 connectingLines.push(
                         <Line
-                                key={index}
+                                key={i - 1}
+                                x1={`${x1}`}
+                                y1={`${y1}`}
+                                x2={`${x2}`}
+                                y2={`${y2}`}
+                                stroke={props.pointColor}
+                                strokeWidth="1"
                         />
                 )
-        });
+        };
 
 
 
@@ -37,19 +59,11 @@ function LineChart(props) {
                         <Svg height="100%" width="100%" viewBox={`0 0 ${viewBox.x} ${viewBox.y}`}>
                                 <Line
                                         x1="0"
-                                        y1={`0`}
-                                        x2={`0`}
-                                        y2={`${viewBox.y}`}
-                                        stroke={props.axisColor}
-                                        strokeWidth="3"
-                                />
-                                <Line
-                                        x1="0"
                                         y1={`${viewBox.y}`}
                                         x2={`${viewBox.x}`}
                                         y2={`${viewBox.y}`}
                                         stroke={props.axisColor}
-                                        strokeWidth="3"
+                                        strokeWidth="2"
                                 />
                                 <G>
                                         {dataPoints.map((value, index) => {
@@ -64,6 +78,9 @@ function LineChart(props) {
                                                         />
                                                 )
                                         })}
+                                </G>
+                                <G>
+                                        {connectingLines}
                                 </G>
                         </Svg>
                 </View>
