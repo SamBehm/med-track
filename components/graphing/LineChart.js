@@ -46,7 +46,7 @@ function LineChart(props) {
                                 y1={`${y1}`}
                                 x2={`${x2}`}
                                 y2={`${y2}`}
-                                stroke={props.pointColor}
+                                stroke={props.lineColor}
                                 strokeWidth="1"
                         />
                 )
@@ -64,6 +64,7 @@ function LineChart(props) {
                                         y2={`${viewBox.y}`}
                                         stroke={props.axisColor}
                                         strokeWidth="2"
+                                        style={{ opacity: 0.5 }}
                                 />
                                 <G>
                                         {dataPoints.map((value, index) => {
@@ -82,10 +83,35 @@ function LineChart(props) {
                                 <G>
                                         {connectingLines}
                                 </G>
+                                {
+                                        props.horizontalGridLines &&
+                                        generateHorizontalGridLines(props.horizontalGridLines, viewBox, paddingX, props.axisColor)
+                                }
                         </Svg>
                 </View>
         )
 
+}
+
+function generateHorizontalGridLines(numLines, viewBox, paddingX, axisColor) {
+        let interval = viewBox.y / numLines;
+        let lines = [];
+        for (let i = 1; i <= numLines; i++) {
+                let y = `${i * interval}`;
+                lines.push(
+                        <Line
+                                key={i - 1}
+                                x1={`${paddingX}`}
+                                x2={`${viewBox.x + paddingX}`}
+                                y1={y}
+                                y2={y}
+                                stroke={axisColor}
+                                strokeWidth={'1'}
+                                style={{ opacity: 0.2 }}
+                        />
+                )
+        }
+        return lines;
 }
 
 export default LineChart;
