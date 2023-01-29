@@ -91,7 +91,6 @@ class MonthView extends Component {
                                 refreshing: false
                         }));
                 });
-
         }
 
         _createDays() {

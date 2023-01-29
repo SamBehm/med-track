@@ -22,7 +22,7 @@ class PillButton extends Component {
                 if (this.props.medsTaken == null && this.props.awaitingIO) {
                         return (
                                 <View style={style}>
-                                        <AnimatedLoadCircle diameter={this.props.svgDimensions} />
+                                        <AnimatedLoadCircle diameter={this.props.svgDimensions * 0.9} />
                                 </View>
                         );
 
