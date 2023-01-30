@@ -5,6 +5,7 @@ import { Circle, G, Line, Svg } from "react-native-svg";
 function LineChart(props) {
 
         const dataSet = [...props.data];
+
         const paddingX = 1;
         const paddingY = 30;
         const viewBox = {
@@ -17,7 +18,7 @@ function LineChart(props) {
         dataSet.forEach((element, index) => {
 
                 let x = (xIntervalSize * index) + (paddingX / 2) + (xIntervalSize / 2);
-                let y = (element / props.maxYValue) * (viewBox.y - paddingY) + (paddingY / 2);
+                let y = viewBox.y - ((element / props.maxYValue) * (viewBox.y - paddingY)) - (paddingY / 2);
                 dataPoints.push({ x: x, y: y });
         });
 

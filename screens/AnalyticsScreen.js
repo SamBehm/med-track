@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import AnimatedLoadCircle from "../components/AnimatedLoadCircle";
 import LineChart from "../components/graphing/LineChart";
 import { medStatusOfDate } from "../libs/localStorageHandler/localStorage";
 
@@ -11,7 +12,7 @@ class AnalyticsScreen extends Component {
                 this.state = {
                         date: new Date(),
                         monthData: null,
-                        awaitingIO: true
+                        awaitingIO: true,
                 }
 
                 this._getMonthData = this._getMonthData.bind(this);
@@ -24,21 +25,28 @@ class AnalyticsScreen extends Component {
                                 monthData: values,
                                 awaitingIO: false
                         })
-                })
+                });
         }
 
         render() {
                 return (
                         <View style={[styles.container, { marginVertical: "10%", marginHorizontal: "5%" }]}>
                                 <View style={[styles.graphContainer, styles.statContainer]}>
-                                        <LineChart
-                                                containerStyle={{ flex: 1, width: "100%", maxHeight: "50%" }}
-                                                lineColor={"grey"}
-                                                pointColor={"#4bee9a"}
-                                                pointRadius={5}
-                                                data={[5, 1, 3, 3, 0, 4, 2]}
-                                                maxYValue={5}
-                                        />
+                                        {this.state.monthData
+                                                ? <LineChart
+                                                        containerStyle={{ flex: 1, width: "100%", maxHeight: "50%" }}
+                                                        lineColor={"grey"}
+                                                        pointColor={"#4bee9a"}
+                                                        pointRadius={5}
+                                                        data={averageTimeTakenPerDay(this.state.monthData)}
+                                                        maxYValue={24}
+                                                />
+                                                : (
+                                                        <View style={{ flex: 1, justifyContent: "center" }}>
+                                                                <AnimatedLoadCircle diameter={75} />
+                                                        </View>
+                                                )
+                                        }
                                 </View>
                                 <View style={[styles.container, styles.horizontalContainer]}>
                                         <View style={[styles.container, styles.statContainer, { marginRight: "2%" }]}>
@@ -67,16 +75,44 @@ class AnalyticsScreen extends Component {
 
 }
 
+function averageTimeTakenPerDay(data) {
+        let averages = [];
+
+        for (let dayNum = 0; dayNum < 7; dayNum++) {
+                let total = 0; // total time in minutes
+                let count = 0; // number of non-null 
+
+                for (let i = dayNum; i < data.length; i += 7) {
+                        if (data[i] == null) {
+                                continue;
+                        }
+                        let splitTime = data[i].split(":"); // [hours, minutes] -> string array
+                        total += (parseInt(splitTime[0]) * 60) + parseInt(splitTime[1]);
+                        count++;
+                }
+
+                if (count == 0) {
+                        averages.push(0);
+                        continue;
+                }
+
+                let average = (total / count);
+
+                averages.push(average / 60);
+        }
+
+        return averages;
+}
+
 const styles = StyleSheet.create({
         container: {
                 flex: 1,
                 justifyContent: "center",
-                alignContent: "center",
         },
         graphContainer: {
                 flex: 4,
                 justifyContent: "flex-start",
-                alignContent: "center",
+                alignItems: "center",
                 marginBottom: "4%",
                 padding: "5%"
         },
