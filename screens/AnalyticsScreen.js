@@ -39,7 +39,7 @@ class AnalyticsScreen extends Component {
 
                                         {this.state.monthData
                                                 ? <LineChart
-                                                        containerStyle={{ flex: 1, width: "100%", maxHeight: "50%" }}
+                                                        containerStyle={{ flex: 2, width: "100%", maxHeight: "50%" }}
                                                         lineColor={"grey"}
                                                         pointColor={"#4bee9a"}
                                                         pointRadius={5}
@@ -57,6 +57,14 @@ class AnalyticsScreen extends Component {
                                                         </View>
                                                 )
                                         }
+                                        <View style={[styles.horizontalContainer, { flex: 1 }]}>
+                                                <View style={{ flex: 1 }}>
+                                                        <Text style={{ fontSize: 20 }}>Average Dosage Time</Text>
+                                                </View>
+                                                <View style={{ flex: 1 }}>
+
+                                                </View>
+                                        </View>
                                 </View>
                                 <View style={[styles.container, styles.horizontalContainer]}>
                                         <View style={[styles.container, styles.statContainer, { marginRight: "2%" }]}>
