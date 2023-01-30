@@ -32,6 +32,11 @@ class AnalyticsScreen extends Component {
                 return (
                         <View style={[styles.container, { marginVertical: "10%", marginHorizontal: "5%" }]}>
                                 <View style={[styles.graphContainer, styles.statContainer]}>
+                                        <View style={{ alignSelf: "baseline" }}>
+                                                <Text style={{ fontSize: 23, fontWeight: "bold" }}>Daily Dosage Time</Text>
+                                                <Text style={{ fontSize: 15, opacity: 0.5 }}>This Month</Text>
+                                        </View>
+
                                         {this.state.monthData
                                                 ? <LineChart
                                                         containerStyle={{ flex: 1, width: "100%", maxHeight: "50%" }}
@@ -40,6 +45,11 @@ class AnalyticsScreen extends Component {
                                                         pointRadius={5}
                                                         data={averageTimeTakenPerDay(this.state.monthData)}
                                                         maxYValue={24}
+                                                        xAxisLabels={["S", "M", "T", "W", "T", "F", "S"]}
+                                                        // yAxisLabels={[...Array(12).keys()].map((value) => { return `${value * 2}` })}
+                                                        yAxisLabels={["12am", "12pm", "12am"]}
+                                                        axisColor="grey"
+                                                        horizontalGridLines={6}
                                                 />
                                                 : (
                                                         <View style={{ flex: 1, justifyContent: "center" }}>
