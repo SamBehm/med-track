@@ -1,4 +1,4 @@
-import Svg, { Circle } from 'react-native-svg';
+import Svg, { Circle, Text } from 'react-native-svg';
 import Animated, { useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useEffect } from 'react';
 import { View } from 'react-native';
@@ -36,6 +36,14 @@ function AnimatedPercentageCircle(props) {
                                         strokeDasharray={circumference}
                                         strokeDashoffset={circumference}
                                 />
+                                <Text
+                                        x={50}
+                                        y={54}
+                                        stroke="black"
+                                        fontSize="10"
+                                        textAnchor="middle"
+                                        fontWeight="1"
+                                >{props.text}</Text>
                         </Svg>
                 </View>
         )
