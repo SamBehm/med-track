@@ -33,15 +33,26 @@ class AnalyticsScreen extends Component {
                 let averageDosageTimesPerDay, averageDosageTime, averageDosageTimeString;
                 if (this.state.monthData) {
                         averageDosageTimesPerDay = averageTimeTakenPerDay(this.state.monthData, this.state.date);
-                        averageDosageTime = (averageDosageTimesPerDay.reduce(
+                        let nonZeroCount = 0;
+                        let sumDosageTime = (averageDosageTimesPerDay.reduce(
                                 (sum, current) => {
-                                        return current > 0 ? (sum + current) : sum
+                                        if (current > 0) {
+                                                nonZeroCount++;
+                                                return sum + current;
+                                        }
+                                        return sum
                                 }
-                        )) / averageDosageTimesPerDay.length;
+                        ));
+
+                        averageDosageTime = nonZeroCount > 0 ? sumDosageTime / nonZeroCount : 0;
+
+                        console.log(averageDosageTime);
 
                         let averageDosageTimeHours = (Math.floor(averageDosageTime) % 12) || 12;
                         let averageDosageTimeMinutes = Math.floor(60 * (averageDosageTime - Math.floor(averageDosageTime)));
-                        averageDosageTimeString = `${averageDosageTimeHours}:${averageDosageTimeMinutes} ${averageDosageTime > 12 ? 'pm' : 'am'}`;
+                        averageDosageTimeString = `${averageDosageTimeHours}:` +
+                                `${averageDosageTimeMinutes < 10 ? '0' + averageDosageTimeMinutes : averageDosageTimeMinutes} ` +
+                                `${averageDosageTime > 12 ? 'pm' : 'am'}`;
                 }
 
 
