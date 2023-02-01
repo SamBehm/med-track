@@ -14,13 +14,15 @@ function AnimatedPercentageCircle(props) {
         const fontSize = props.fontSize ? props.fontSize : 10;
 
         const progress = useSharedValue(0);
-        const animProps = useAnimatedProps(() => ({
-                strokeDashoffset: (circumference * (1 - progress.value))
-        }));
+        const animProps = useAnimatedProps(() => {
+                return {
+                        strokeDashoffset: (circumference * (1 - progress.value))
+                }
+        });
 
         useEffect(() => {
                 progress.value = withTiming(props.percent, { duration: 1000 });
-        }, []);
+        }, [props.percent]);
 
 
         return (
@@ -51,7 +53,6 @@ function AnimatedPercentageCircle(props) {
                                         fillOpacity={props.fillOpacity}
                                         strokeLinecap="round"
                                         strokeDasharray={circumference}
-                                        strokeDashoffset={circumference}
                                         transform={{ ...props.transform, originX: viewBox / 2, originY: viewBox / 2 }}
                                 />
                                 <Text

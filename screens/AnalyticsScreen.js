@@ -46,8 +46,6 @@ class AnalyticsScreen extends Component {
 
                         averageDosageTime = nonZeroCount > 0 ? sumDosageTime / nonZeroCount : 0;
 
-                        console.log(averageDosageTime);
-
                         let averageDosageTimeHours = (Math.floor(averageDosageTime) % 12) || 12;
                         let averageDosageTimeMinutes = Math.floor(60 * (averageDosageTime - Math.floor(averageDosageTime)));
                         averageDosageTimeString = `${averageDosageTimeHours}:` +
