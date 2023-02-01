@@ -9,6 +9,9 @@ function AnimatedPercentageCircle(props) {
 
         const radius = props.radius;
         const circumference = 2 * Math.PI * radius;
+        const viewBox = (2 * radius) + (props.strokeWidth / 2);
+
+        const fontSize = props.fontSize ? props.fontSize : 10;
 
         const progress = useSharedValue(0);
         const animProps = useAnimatedProps(() => ({
@@ -22,12 +25,12 @@ function AnimatedPercentageCircle(props) {
 
         return (
                 <View style={props.containerStyle}>
-                        <Svg height="85%" width="85%" viewBox='0 0 100 100'>
+                        <Svg height="85%" width="85%" viewBox={`0 0 ${viewBox} ${viewBox}`}>
                                 {
                                         props.showBackgroundCircle && (
                                                 <Circle
-                                                        cx="50"
-                                                        cy="50"
+                                                        cx={viewBox / 2}
+                                                        cy={viewBox / 2}
                                                         r={radius}
                                                         fill={props.fill}
                                                         fillOpacity={props.fillOpacity}
@@ -39,8 +42,8 @@ function AnimatedPercentageCircle(props) {
                                 }
                                 <AnimCircle
                                         animatedProps={animProps}
-                                        cx="50"
-                                        cy="50"
+                                        cx={viewBox / 2}
+                                        cy={viewBox / 2}
                                         r={radius}
                                         stroke={props.strokeColor}
                                         strokeWidth={props.strokeWidth / 2}
@@ -49,13 +52,13 @@ function AnimatedPercentageCircle(props) {
                                         strokeLinecap="round"
                                         strokeDasharray={circumference}
                                         strokeDashoffset={circumference}
-                                        transform={{ ...props.transform }}
+                                        transform={{ ...props.transform, originX: viewBox / 2, originY: viewBox / 2 }}
                                 />
                                 <Text
-                                        x={50}
-                                        y={54}
+                                        x={viewBox / 2}
+                                        y={(viewBox / 2) + (fontSize / 2) - 1}
                                         stroke="black"
-                                        fontSize="10"
+                                        fontSize={fontSize}
                                         textAnchor="middle"
                                         fontWeight="1"
                                 >

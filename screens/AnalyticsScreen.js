@@ -78,7 +78,7 @@ class AnalyticsScreen extends Component {
                                                         <Text style={{ fontSize: 20 }}>Average Dosage Time</Text>
                                                         <AnimatedPercentageCircle
                                                                 radius={40}
-                                                                containerStyle={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+                                                                containerStyle={{ flex: 1, justifyContent: "center", alignItems: "baseline" }}
                                                                 strokeWidth={7}
                                                                 strokeColor={"#4bee9a"}
                                                                 fill={"white"}
@@ -86,7 +86,7 @@ class AnalyticsScreen extends Component {
                                                                 percent={averageDosageTime == null ? 0 : (averageDosageTime / 12)}
                                                                 text={averageDosageTimeString}
                                                                 showBackgroundCircle={true}
-                                                                transform={{ rotation: -90, originX: 50, originY: 50 }}
+                                                                transform={{ rotation: -90 }}
                                                         />
                                                 </View>
                                                 <View style={{ flex: 1 }}>
