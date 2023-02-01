@@ -32,7 +32,7 @@ class AnalyticsScreen extends Component {
         render() {
                 let averageDosageTimesPerDay, averageDosageTime, averageDosageTimeString;
                 if (this.state.monthData) {
-                        averageDosageTimesPerDay = averageTimeTakenPerDay(this.state.monthData);
+                        averageDosageTimesPerDay = averageTimeTakenPerDay(this.state.monthData, this.state.date);
                         averageDosageTime = (averageDosageTimesPerDay.reduce(
                                 (sum, current) => {
                                         return current > 0 ? (sum + current) : sum
@@ -123,8 +123,10 @@ class AnalyticsScreen extends Component {
 
 }
 
-function averageTimeTakenPerDay(data) {
-        let averages = [];
+function averageTimeTakenPerDay(data, date) {
+        let averages = Array(7);
+
+        let sundayOffset = date.getDay();
 
         for (let dayNum = 0; dayNum < 7; dayNum++) {
                 let total = 0; // total time in minutes
@@ -140,13 +142,13 @@ function averageTimeTakenPerDay(data) {
                 }
 
                 if (count == 0) {
-                        averages.push(0);
+                        averages[(sundayOffset + dayNum) % 7] = 0;
                         continue;
                 }
 
                 let average = (total / count);
 
-                averages.push(average / 60);
+                averages[(sundayOffset + dayNum) % 7] = average / 60;
         }
 
         return averages;
