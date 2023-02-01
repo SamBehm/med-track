@@ -34,7 +34,9 @@ class AnalyticsScreen extends Component {
                 if (this.state.monthData) {
                         averageDosageTimesPerDay = averageTimeTakenPerDay(this.state.monthData);
                         averageDosageTime = (averageDosageTimesPerDay.reduce(
-                                (sum, current) => { return current > 0 ? sum + current : sum }
+                                (sum, current) => {
+                                        return current > 0 ? (sum + current) : sum
+                                }
                         )) / averageDosageTimesPerDay.length;
 
                         let averageDosageTimeHours = (Math.floor(averageDosageTime) % 12) || 12;
@@ -80,8 +82,10 @@ class AnalyticsScreen extends Component {
                                                                 strokeWidth={7}
                                                                 strokeColor={"#4bee9a"}
                                                                 fill={"white"}
+                                                                fillOpacity={"0"}
                                                                 percent={averageDosageTime == null ? 0 : (averageDosageTime / 12)}
                                                                 text={averageDosageTimeString}
+                                                                showBackgroundCircle={true}
                                                         />
                                                 </View>
                                                 <View style={{ flex: 1 }}>
