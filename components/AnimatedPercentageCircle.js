@@ -9,7 +9,7 @@ function AnimatedPercentageCircle(props) {
 
         const radius = props.radius;
         const circumference = 2 * Math.PI * radius;
-        const viewBox = (2 * radius) + (props.strokeWidth / 2);
+        const viewBox = (2 * radius) + (props.strokeWidth);
 
         const fontSize = props.fontSize ? props.fontSize : 10;
 
@@ -24,8 +24,8 @@ function AnimatedPercentageCircle(props) {
 
 
         return (
-                <View style={props.containerStyle}>
-                        <Svg height="85%" width="85%" viewBox={`0 0 ${viewBox} ${viewBox}`}>
+                <View style={{ ...props.containerStyle }}>
+                        <Svg height="100%" width="100%" viewBox={`0 0 ${viewBox} ${viewBox}`}>
                                 {
                                         props.showBackgroundCircle && (
                                                 <Circle

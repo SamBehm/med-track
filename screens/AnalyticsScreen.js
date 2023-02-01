@@ -74,12 +74,12 @@ class AnalyticsScreen extends Component {
                                                 )
                                         }
                                         <View style={[styles.horizontalContainer, { flex: 1 }]}>
-                                                <View style={{ flex: 1 }}>
-                                                        <Text style={{ fontSize: 20 }}>Average Dosage Time</Text>
+                                                <View style={{ flex: 1, justifyContent: "center" }}>
+                                                        <Text style={{ flexShrink: 1, fontSize: 20 }}>Average Dosage Time</Text>
                                                         <AnimatedPercentageCircle
-                                                                radius={40}
-                                                                containerStyle={{ flex: 1, justifyContent: "center", alignItems: "baseline" }}
-                                                                strokeWidth={7}
+                                                                radius={30}
+                                                                containerStyle={{ flex: 4, alignItems: "baseline" }}
+                                                                strokeWidth={5}
                                                                 strokeColor={"#4bee9a"}
                                                                 fill={"white"}
                                                                 fillOpacity={"0"}
@@ -90,7 +90,9 @@ class AnalyticsScreen extends Component {
                                                         />
                                                 </View>
                                                 <View style={{ flex: 1 }}>
+                                                        <Text>
 
+                                                        </Text>
                                                 </View>
                                         </View>
                                 </View>
