@@ -49,7 +49,7 @@ function AnimatedPercentageCircle(props) {
                                         strokeLinecap="round"
                                         strokeDasharray={circumference}
                                         strokeDashoffset={circumference}
-                                        transform={{ rotation: -90, originX: 50, originY: 50 }}
+                                        transform={{ ...props.transform }}
                                 />
                                 <Text
                                         x={50}

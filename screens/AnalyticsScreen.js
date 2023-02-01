@@ -86,6 +86,7 @@ class AnalyticsScreen extends Component {
                                                                 percent={averageDosageTime == null ? 0 : (averageDosageTime / 12)}
                                                                 text={averageDosageTimeString}
                                                                 showBackgroundCircle={true}
+                                                                transform={{ rotation: -90, originX: 50, originY: 50 }}
                                                         />
                                                 </View>
                                                 <View style={{ flex: 1 }}>
