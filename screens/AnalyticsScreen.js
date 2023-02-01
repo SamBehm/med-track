@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import AnimatedLoadCircle from "../components/AnimatedLoadCircle";
+import AnimatedPercentageCircle from "../components/AnimatedPercentageCircle";
 import LineChart from "../components/graphing/LineChart";
 import { medStatusOfDate } from "../libs/localStorageHandler/localStorage";
 
@@ -29,6 +30,15 @@ class AnalyticsScreen extends Component {
         }
 
         render() {
+                let averageDosageTimesPerDay, averageDosageTime;
+                if (this.state.monthData) {
+                        averageDosageTimesPerDay = averageTimeTakenPerDay(this.state.monthData);
+                        averageDosageTime = (averageDosageTimesPerDay.reduce(
+                                (prev, current) => prev + current
+                        )) / averageDosageTimesPerDay.length;
+                }
+
+
                 return (
                         <View style={[styles.container, { marginVertical: "10%", marginHorizontal: "5%" }]}>
                                 <View style={[styles.graphContainer, styles.statContainer]}>
@@ -43,7 +53,7 @@ class AnalyticsScreen extends Component {
                                                         lineColor={"grey"}
                                                         pointColor={"#4bee9a"}
                                                         pointRadius={5}
-                                                        data={averageTimeTakenPerDay(this.state.monthData)}
+                                                        data={averageDosageTimesPerDay}
                                                         maxYValue={24}
                                                         xAxisLabels={["S", "M", "T", "W", "T", "F", "S"]}
                                                         // yAxisLabels={[...Array(12).keys()].map((value) => { return `${value * 2}` })}
@@ -60,6 +70,14 @@ class AnalyticsScreen extends Component {
                                         <View style={[styles.horizontalContainer, { flex: 1 }]}>
                                                 <View style={{ flex: 1 }}>
                                                         <Text style={{ fontSize: 20 }}>Average Dosage Time</Text>
+                                                        <AnimatedPercentageCircle
+                                                                radius={40}
+                                                                containerStyle={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+                                                                strokeWidth={7}
+                                                                strokeColor={"#4bee9a"}
+                                                                fill={"white"}
+                                                                percent={averageDosageTime == null ? 0 : (averageDosageTime / (12 * 60))}
+                                                        />
                                                 </View>
                                                 <View style={{ flex: 1 }}>
 

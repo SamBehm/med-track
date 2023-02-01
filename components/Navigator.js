@@ -58,7 +58,8 @@ export default function Navigator() {
                                                         }
                                                         return <GraphSVG width={25} height={25} color={strokeColor} opacity={opacity} />
                                                 },
-                                                tabBarActiveTintColor: 'green'
+                                                tabBarActiveTintColor: 'green',
+                                                unmountOnBlur: true
                                         }}
                                 />
                         </Tab.Navigator>
