@@ -135,7 +135,8 @@ class AnalyticsScreen extends Component {
 function averageTimeTakenPerDay(data, date) {
         let averages = Array(7);
 
-        let sundayOffset = date.getDay();
+        let newDate = new Date(date.getFullYear(), date.getMonth(), 1);
+        let sundayOffset = newDate.getDay();
 
         for (let dayNum = 0; dayNum < 7; dayNum++) {
                 let total = 0; // total time in minutes
