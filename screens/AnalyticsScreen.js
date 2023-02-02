@@ -115,7 +115,7 @@ class AnalyticsScreen extends Component {
                                                                 percent={maxConsistencyIndex == null ? 0 : dayConsistencies[maxConsistencyIndex]}
                                                                 text={maxConsistencyIndex == null || maxConsistencyIndex < 0
                                                                         ? '...'
-                                                                        : `${dayNames[maxConsistencyIndex].substring(0, 3)} ${dayConsistencies[maxConsistencyIndex] * 100}%`
+                                                                        : `${dayNames[maxConsistencyIndex].substring(0, 3)}\n ${dayConsistencies[maxConsistencyIndex] * 100}%`
                                                                 }
                                                                 showBackgroundCircle={true}
                                                                 transform={{ rotation: -90 }}

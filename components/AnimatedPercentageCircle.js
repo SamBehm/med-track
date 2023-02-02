@@ -1,4 +1,4 @@
-import Svg, { Circle, Text } from 'react-native-svg';
+import Svg, { Circle, G, Text, TSpan } from 'react-native-svg';
 import Animated, { useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useEffect } from 'react';
 import { View } from 'react-native';
@@ -12,6 +12,20 @@ function AnimatedPercentageCircle(props) {
         const viewBox = (2 * radius) + (props.strokeWidth);
 
         const fontSize = props.fontSize ? props.fontSize : 10;
+        let textStrings = [props.text], textArray;
+
+        if (props.text != null) {
+                let i = 0;
+                while ((i = textStrings[textStrings.length - 1].indexOf('\n')) > 0) {
+                        let temp = textStrings[textStrings.length - 1];
+                        textStrings[textStrings.length - 1] = temp.substring(0, i);
+                        textStrings.push(temp.substring(i + 1));
+                }
+
+                textArray = textStrings.map((string, index) => {
+                        return (<TSpan x={0} dy={index > 0 ? fontSize * 1.2 : 0} key={index}>{string}</TSpan>);
+                })
+        }
 
         const progress = useSharedValue(0);
         const animProps = useAnimatedProps(() => {
@@ -55,16 +69,18 @@ function AnimatedPercentageCircle(props) {
                                         strokeDasharray={circumference}
                                         transform={{ ...props.transform, originX: viewBox / 2, originY: viewBox / 2 }}
                                 />
-                                <Text
-                                        x={viewBox / 2}
-                                        y={(viewBox / 2) + (fontSize / 2) - 1}
-                                        stroke="black"
-                                        fontSize={fontSize}
-                                        textAnchor="middle"
-                                        fontWeight="1"
-                                >
-                                        {props.text}
-                                </Text>
+                                <G transform={`translate(${viewBox / 2} ${(viewBox / 2) + ((2 - textStrings.length) * ((fontSize / 2) - 1))})`}>
+                                        <Text
+                                                x={0}
+                                                y={0}
+                                                stroke="black"
+                                                fontSize={fontSize}
+                                                textAnchor="middle"
+                                                fontWeight="1"
+                                        >
+                                                {textArray}
+                                        </Text>
+                                </G>
                         </Svg>
                 </View>
         )
