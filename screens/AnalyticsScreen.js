@@ -30,7 +30,7 @@ class AnalyticsScreen extends Component {
         }
 
         render() {
-                let averageDosageTimesPerDay, averageDosageTime, averageDosageTimeString;
+                let averageDosageTimesPerDay, averageDosageTime, averageDosageTimeString, dayConsistencies, maxConsistencyIndex;
                 if (this.state.monthData) {
                         averageDosageTimesPerDay = averageTimeTakenPerDay(this.state.monthData, this.state.date);
                         let nonZeroCount = 0;
@@ -51,6 +51,11 @@ class AnalyticsScreen extends Component {
                         averageDosageTimeString = `${averageDosageTimeHours}:` +
                                 `${averageDosageTimeMinutes < 10 ? '0' + averageDosageTimeMinutes : averageDosageTimeMinutes} ` +
                                 `${averageDosageTime > 12 ? 'pm' : 'am'}`;
+
+                        dayConsistencies = getDayConsistency(this.state.monthData, this.state.date);
+                        maxConsistencyIndex = indexOfMax(dayConsistencies);
+                        console.log(dayNames[maxConsistencyIndex]);
+
                 }
 
 
@@ -70,7 +75,7 @@ class AnalyticsScreen extends Component {
                                                         pointRadius={5}
                                                         data={averageDosageTimesPerDay}
                                                         maxYValue={24}
-                                                        xAxisLabels={["S", "M", "T", "W", "T", "F", "S"]}
+                                                        xAxisLabels={dayNames.map(x => x[0])}
                                                         // yAxisLabels={[...Array(12).keys()].map((value) => { return `${value * 2}` })}
                                                         yAxisLabels={["12am", "12pm", "12am"]}
                                                         axisColor="grey"
@@ -99,9 +104,22 @@ class AnalyticsScreen extends Component {
                                                         />
                                                 </View>
                                                 <View style={{ flex: 1 }}>
-                                                        <Text>
-
-                                                        </Text>
+                                                        <Text style={{ flexShrink: 1, fontSize: 20 }}>Most Consistent Day</Text>
+                                                        <AnimatedPercentageCircle
+                                                                radius={30}
+                                                                containerStyle={{ flex: 4, alignItems: "baseline" }}
+                                                                strokeWidth={5}
+                                                                strokeColor={"#4bee9a"}
+                                                                fill={"white"}
+                                                                fillOpacity={"0"}
+                                                                percent={maxConsistencyIndex == null ? 0 : dayConsistencies[maxConsistencyIndex]}
+                                                                text={maxConsistencyIndex == null || maxConsistencyIndex < 0
+                                                                        ? '...'
+                                                                        : `${dayNames[maxConsistencyIndex].substring(0, 3)} ${dayConsistencies[maxConsistencyIndex] * 100}%`
+                                                                }
+                                                                showBackgroundCircle={true}
+                                                                transform={{ rotation: -90 }}
+                                                        />
                                                 </View>
                                         </View>
                                 </View>
@@ -130,6 +148,48 @@ class AnalyticsScreen extends Component {
                 return promises;
         }
 
+}
+
+function indexOfMax(array) {
+        if (!array || array.length == 0) {
+                return -1;
+        }
+
+        let maxIndex = 0;
+        let maxValue = 0;
+        for (let i = 0; i < array.length; i++) {
+                if (array[i] > maxValue) {
+                        maxIndex = i;
+                        maxValue = array[i];
+                }
+        }
+
+        return maxIndex;
+}
+
+function getDayConsistency(data, date) {
+        let consistencies = Array(7);
+
+        let newDate = new Date(date.getFullYear(), date.getMonth(), 1);
+        let sundayOffset = newDate.getDay();
+
+        for (let dayNum = 0; dayNum < 7; dayNum++) {
+                let numDaysCompleted = 0;
+                let numDaysTotal = 0;
+
+                for (let i = dayNum; i < data.length; i += 7) {
+                        numDaysTotal++;
+                        if (data[i] == null) {
+                                continue;
+                        }
+
+                        numDaysCompleted++;
+                }
+
+                consistencies[(sundayOffset + dayNum) % 7] = numDaysCompleted / numDaysTotal;
+        }
+
+        return consistencies;
 }
 
 function averageTimeTakenPerDay(data, date) {
@@ -194,5 +254,8 @@ const styles = StyleSheet.create({
                 elevation: 3,
         }
 });
+
+const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
 
 export default AnalyticsScreen;
