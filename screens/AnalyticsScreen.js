@@ -91,9 +91,9 @@ class AnalyticsScreen extends Component {
                                                 <View style={{ flex: 1, justifyContent: "center" }}>
                                                         <Text style={{ flexShrink: 1, fontSize: 20 }}>Average Dosage Time</Text>
                                                         <AnimatedPercentageCircle
-                                                                radius={30}
+                                                                radius={45}
                                                                 containerStyle={{ flex: 4, alignItems: "baseline" }}
-                                                                strokeWidth={5}
+                                                                strokeWidth={8}
                                                                 strokeColor={"#4bee9a"}
                                                                 fill={"white"}
                                                                 fillOpacity={"0"}
@@ -101,14 +101,15 @@ class AnalyticsScreen extends Component {
                                                                 text={averageDosageTimeString}
                                                                 showBackgroundCircle={true}
                                                                 transform={{ rotation: -90 }}
+                                                                fontSize={15}
                                                         />
                                                 </View>
                                                 <View style={{ flex: 1 }}>
                                                         <Text style={{ flexShrink: 1, fontSize: 20 }}>Most Consistent Day</Text>
                                                         <AnimatedPercentageCircle
-                                                                radius={30}
+                                                                radius={45}
                                                                 containerStyle={{ flex: 4, alignItems: "baseline" }}
-                                                                strokeWidth={5}
+                                                                strokeWidth={8}
                                                                 strokeColor={"#4bee9a"}
                                                                 fill={"white"}
                                                                 fillOpacity={"0"}
@@ -119,6 +120,7 @@ class AnalyticsScreen extends Component {
                                                                 }
                                                                 showBackgroundCircle={true}
                                                                 transform={{ rotation: -90 }}
+                                                                fontSize={15}
                                                         />
                                                 </View>
                                         </View>

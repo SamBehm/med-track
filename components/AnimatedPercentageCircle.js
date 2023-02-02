@@ -41,7 +41,7 @@ function AnimatedPercentageCircle(props) {
 
         return (
                 <View style={{ ...props.containerStyle }}>
-                        <Svg height="100%" width="100%" viewBox={`0 0 ${viewBox} ${viewBox}`}>
+                        <Svg height="100%" width={viewBox} viewBox={`0 0 ${viewBox} ${viewBox}`}>
                                 {
                                         props.showBackgroundCircle && (
                                                 <Circle
