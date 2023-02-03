@@ -30,7 +30,7 @@ class AnalyticsScreen extends Component {
         }
 
         render() {
-                let averageDosageTimesPerDay, averageDosageTime, averageDosageTimeString, dayConsistencies, maxConsistencyIndex;
+                let averageDosageTimesPerDay, averageDosageTime, averageDosageTimeString, dayConsistencies, maxConsistencyIndex, overallConsistency;
                 if (this.state.monthData) {
                         averageDosageTimesPerDay = averageTimeTakenPerDay(this.state.monthData, this.state.date);
                         let nonZeroCount = 0;
@@ -54,8 +54,8 @@ class AnalyticsScreen extends Component {
 
                         dayConsistencies = getDayConsistency(this.state.monthData, this.state.date);
                         maxConsistencyIndex = indexOfMax(dayConsistencies);
-                        console.log(dayNames[maxConsistencyIndex]);
 
+                        overallConsistency = dayConsistencies.reduce((sum, current) => sum + current) / 7;
                 }
 
 
@@ -116,7 +116,7 @@ class AnalyticsScreen extends Component {
                                                                 percent={maxConsistencyIndex == null ? 0 : dayConsistencies[maxConsistencyIndex]}
                                                                 text={maxConsistencyIndex == null || maxConsistencyIndex < 0
                                                                         ? '...'
-                                                                        : `${dayNames[maxConsistencyIndex].substring(0, 3)}\n ${dayConsistencies[maxConsistencyIndex] * 100}%`
+                                                                        : `${dayNames[maxConsistencyIndex].substring(0, 3)}\n ${Math.ceil(dayConsistencies[maxConsistencyIndex] * 100)}%`
                                                                 }
                                                                 showBackgroundCircle={true}
                                                                 transform={{ rotation: -90 }}
@@ -127,7 +127,29 @@ class AnalyticsScreen extends Component {
                                 </View>
                                 <View style={[styles.container, styles.horizontalContainer]}>
                                         <View style={[styles.container, styles.statContainer, { marginRight: "2%" }]}>
-
+                                                <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+                                                        Month Completion
+                                                </Text>
+                                                <AnimatedPercentageCircle
+                                                        radius={45}
+                                                        containerStyle={{ flex: 4, alignItems: "center" }}
+                                                        strokeWidth={8}
+                                                        strokeColor={"#4bee9a"}
+                                                        fill={"white"}
+                                                        fillOpacity={"0"}
+                                                        percent={overallConsistency == null ? 0 : overallConsistency}
+                                                        text={overallConsistency == null ? "" : `${Math.ceil(overallConsistency * 100)}%`}
+                                                        showBackgroundCircle={true}
+                                                        transform={{ rotation: -90 }}
+                                                        fontSize={15}
+                                                />
+                                                <Text style={{ textAlign: "center", fontSize: 25 }}>
+                                                        {
+                                                                this.state.monthData
+                                                                        ? `${overallConsistency * this.state.monthData.length}/${this.state.monthData.length}`
+                                                                        : `...`
+                                                        }
+                                                </Text>
                                         </View>
                                         <View style={[styles.container, styles.statContainer, { marginLeft: "2%" }]}>
 
@@ -245,6 +267,7 @@ const styles = StyleSheet.create({
         },
         statContainer: {
                 borderRadius: 10,
+                padding: 20,
                 backgroundColor: "white",
                 shadowColor: "#000000",
                 shadowOpacity: 1,
